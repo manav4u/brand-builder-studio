@@ -10,16 +10,20 @@ const HeroSection = () => {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-background">
-      {/* Hero Image with cinematic scale-in animation */}
+      {/* Hero Image with cinematic scale-in animation - Responsive */}
       <div className="absolute inset-0 animate-scale-in">
-        <img
-          src="/IMG_20260204_010438.jpg"
-          alt="Golden figure standing out from the crowd"
-          className="h-full w-full object-contain"
-        />
-        {/* Subtle gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-transparent opacity-40" />
+        <picture>
+          {/* Desktop image for screens > 768px */}
+          <source media="(min-width: 768px)" srcSet="/hero-desktop.jpg" />
+          {/* Mobile image for screens < 768px - displayed fully without cropping */}
+          <img
+            src="/hero-mobile.jpg"
+            alt="Golden figure standing out from the crowd"
+            className="h-full w-full object-contain md:object-cover"
+          />
+        </picture>
+        {/* Premium gradient overlay - transparent top to Midnight Aubergine bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[hsl(285,55%,9%)]" />
       </div>
 
       {/* Tagline - positioned in lower third */}
