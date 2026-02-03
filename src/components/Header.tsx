@@ -7,18 +7,73 @@ interface HeaderProps {
 const Header = ({ className }: HeaderProps) => {
   return (
     <>
-      {/* SVG Filter for chromatic aberration effect */}
+      {/* SVG Filters for glass distortion effects */}
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
-          <filter id="glass-distortion" x="-50%" y="-50%" width="200%" height="200%">
+          {/* Chromatic aberration filter with color offsets */}
+          <filter id="glass-chromatic" x="-20%" y="-20%" width="140%" height="140%">
+            {/* Displacement effect */}
+            <feTurbulence 
+              type="fractalNoise" 
+              baseFrequency="0.01" 
+              numOctaves="3" 
+              result="noise"
+            />
+            <feDisplacementMap 
+              in="SourceGraphic" 
+              in2="noise" 
+              scale="0.5"
+              xChannelSelector="R" 
+              yChannelSelector="G"
+              result="displaced"
+            />
+            
+            {/* Red channel - no offset */}
+            <feOffset in="displaced" dx="0" dy="0" result="red" />
             <feColorMatrix
+              in="red"
               type="matrix"
               values="1 0 0 0 0
-                      0 1 0 0 0.039
-                      0 0 1 0 0.078
+                      0 0 0 0 0
+                      0 0 0 0 0
                       0 0 0 1 0"
+              result="redOut"
             />
-            <feGaussianBlur stdDeviation="0.5" />
+            
+            {/* Green channel - offset 10 */}
+            <feOffset in="displaced" dx="0.3" dy="0.3" result="green" />
+            <feColorMatrix
+              in="green"
+              type="matrix"
+              values="0 0 0 0 0
+                      0 1 0 0 0
+                      0 0 0 0 0
+                      0 0 0 1 0"
+              result="greenOut"
+            />
+            
+            {/* Blue channel - offset 20 */}
+            <feOffset in="displaced" dx="0.6" dy="0.6" result="blue" />
+            <feColorMatrix
+              in="blue"
+              type="matrix"
+              values="0 0 0 0 0
+                      0 0 0 0 0
+                      0 0 1 0 0
+                      0 0 0 1 0"
+              result="blueOut"
+            />
+            
+            {/* Blend channels */}
+            <feBlend in="redOut" in2="greenOut" mode="screen" result="rg" />
+            <feBlend in="rg" in2="blueOut" mode="screen" result="rgb" />
+            
+            {/* Apply brightness */}
+            <feComponentTransfer in="rgb">
+              <feFuncR type="linear" slope="0.5" />
+              <feFuncG type="linear" slope="0.5" />
+              <feFuncB type="linear" slope="0.5" />
+            </feComponentTransfer>
           </filter>
         </defs>
       </svg>
@@ -32,12 +87,13 @@ const Header = ({ className }: HeaderProps) => {
         )}
         style={{
           borderRadius: "50px",
-          background: `rgba(30, 11, 36, 0.1)`,
+          background: "rgba(30, 11, 36, 0)", // Background opacity: 0
           backdropFilter: "blur(11px) saturate(1) brightness(0.5)",
           WebkitBackdropFilter: "blur(11px) saturate(1) brightness(0.5)",
-          border: "0.07px solid rgba(255, 210, 51, 0.15)",
+          border: "0.07px solid rgba(255, 210, 51, 0.2)",
           opacity: 0.93,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+          filter: "url(#glass-chromatic)",
+          mixBlendMode: "screen",
         }}
       >
         <div className="flex items-center justify-between">
