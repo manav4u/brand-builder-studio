@@ -56,7 +56,7 @@ const HeroSection = () => {
       </div>
 
       {/* Desktop Tagline - left-aligned, large and bold */}
-      <div className="absolute inset-0 hidden md:flex items-center">
+      <div className="absolute inset-0 hidden md:flex items-center pt-24 lg:pt-32">
         <div className="pl-12 lg:pl-20 xl:pl-28">
           <h1 className="font-display text-7xl lg:text-8xl xl:text-[7rem] 2xl:text-[8rem] font-bold text-foreground tracking-tight text-left leading-[0.95]">
             <span
