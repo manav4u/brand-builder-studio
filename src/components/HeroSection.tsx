@@ -55,25 +55,23 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Desktop Tagline - left-aligned in container */}
+      {/* Desktop Tagline - left-aligned, large and bold */}
       <div className="absolute inset-0 hidden md:flex items-center">
-        <div className="w-full max-w-[1200px] mx-auto px-8 lg:px-12">
-          <div className="max-w-2xl">
-            <h1 className="font-display text-6xl lg:text-7xl xl:text-[5rem] font-bold text-foreground tracking-tight text-left">
-              <span
-                className="block opacity-0 animate-fade-in-up"
-                style={{ animationDelay: "0.5s" }}
-              >
-                Built to stand out.
-              </span>
-              <span
-                className="block opacity-0 animate-fade-in-up mt-4"
-                style={{ animationDelay: "0.9s" }}
-              >
-                Not to blend in.
-              </span>
-            </h1>
-          </div>
+        <div className="pl-12 lg:pl-20 xl:pl-28">
+          <h1 className="font-display text-7xl lg:text-8xl xl:text-[7rem] 2xl:text-[8rem] font-bold text-foreground tracking-tight text-left leading-[0.95]">
+            <span
+              className="block opacity-0 animate-fade-in-up"
+              style={{ animationDelay: "0.5s" }}
+            >
+              Built to stand out.
+            </span>
+            <span
+              className="block opacity-0 animate-fade-in-up mt-4 lg:mt-6"
+              style={{ animationDelay: "0.9s" }}
+            >
+              Not to blend in.
+            </span>
+          </h1>
         </div>
       </div>
 
