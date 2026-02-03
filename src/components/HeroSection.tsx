@@ -21,12 +21,12 @@ const HeroSection = () => {
         }}
       />
       
-      {/* Desktop Background - figure anchored to the right, fully visible */}
+      {/* Desktop Background - figure anchored to the right, fills screen */}
       <div 
         className="absolute inset-0 animate-scale-in hidden md:block"
         style={{
           backgroundImage: "url('/hero-desktop.jpg')",
-          backgroundSize: "contain",
+          backgroundSize: "cover",
           backgroundPosition: "center right",
           backgroundRepeat: "no-repeat",
         }}
