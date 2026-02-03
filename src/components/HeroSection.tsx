@@ -16,7 +16,7 @@ const HeroSection = () => {
         style={{
           backgroundImage: "url('/hero-mobile.jpg')",
           backgroundSize: "contain",
-          backgroundPosition: "center",
+         backgroundPosition: "top center",
           backgroundRepeat: "no-repeat",
         }}
       />
@@ -27,7 +27,7 @@ const HeroSection = () => {
         style={{
           backgroundImage: "url('/hero-desktop.jpg')",
           backgroundSize: "cover",
-          backgroundPosition: "center right",
+         backgroundPosition: "top right",
           backgroundRepeat: "no-repeat",
         }}
       />
