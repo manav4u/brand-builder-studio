@@ -1,5 +1,4 @@
 import { ChevronDown } from "lucide-react";
-import heroImage from "@/assets/hero-golden-figure.jpg";
 
 const HeroSection = () => {
   const handleScrollDown = () => {
@@ -14,7 +13,7 @@ const HeroSection = () => {
       {/* Hero Image with cinematic scale-in animation */}
       <div className="absolute inset-0 animate-scale-in">
         <img
-          src={heroImage}
+          src="/IMG_20260204_010438.jpg"
           alt="Golden figure standing out from the crowd"
           className="h-full w-full object-cover object-center"
         />
