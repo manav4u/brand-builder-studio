@@ -1,8 +1,10 @@
 import HeroSection from "@/components/HeroSection";
+import Header from "@/components/Header";
 
 const Index = () => {
   return (
     <main className="bg-background">
+      <Header name="Nithin" />
       <HeroSection />
       
       {/* Placeholder for future sections */}
