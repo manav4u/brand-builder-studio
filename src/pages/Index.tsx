@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 const Index = () => {
   return (
     <main className="bg-background">
-      <Header name="Nithin" />
+      <Header />
       <HeroSection />
       
       {/* Placeholder for future sections */}
