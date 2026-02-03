@@ -10,26 +10,35 @@ const HeroSection = () => {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-background">
-      {/* Hero Image with cinematic scale-in animation - Responsive */}
-      <div className="absolute inset-0 animate-scale-in">
-        <picture>
-          {/* Desktop image for screens > 768px */}
-          <source media="(min-width: 768px)" srcSet="/hero-desktop.jpg" />
-          {/* Mobile image for screens < 768px - displayed fully without cropping */}
-          <img
-            src="/hero-mobile.jpg"
-            alt="Golden figure standing out from the crowd"
-            className="h-full w-full object-contain md:object-cover"
-          />
-        </picture>
-        {/* Premium gradient overlay - transparent top to Midnight Aubergine bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[hsl(285,55%,9%)]" />
-      </div>
+      {/* Mobile Background - centered figure */}
+      <div 
+        className="absolute inset-0 animate-scale-in md:hidden"
+        style={{
+          backgroundImage: "url('/hero-mobile.jpg')",
+          backgroundSize: "contain",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+      
+      {/* Desktop Background - figure anchored to the right */}
+      <div 
+        className="absolute inset-0 animate-scale-in hidden md:block"
+        style={{
+          backgroundImage: "url('/hero-desktop.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center right",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+      
+      {/* Premium gradient overlay - transparent top to Midnight Aubergine bottom */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[hsl(285,55%,9%)]" />
 
-      {/* Tagline - positioned in lower third */}
-      <div className="absolute inset-0 flex flex-col items-center justify-end pb-32 md:pb-40">
+      {/* Mobile Tagline - centered at bottom */}
+      <div className="absolute inset-0 flex flex-col items-center justify-end pb-32 md:hidden">
         <div className="text-center px-6">
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-foreground tracking-tight">
+          <h1 className="font-display text-4xl font-bold text-foreground tracking-tight">
             <span
               className="block opacity-0 animate-fade-in-up"
               style={{ animationDelay: "0.5s" }}
@@ -43,6 +52,28 @@ const HeroSection = () => {
               Not to blend in.
             </span>
           </h1>
+        </div>
+      </div>
+
+      {/* Desktop Tagline - left-aligned in container */}
+      <div className="absolute inset-0 hidden md:flex items-center">
+        <div className="w-full max-w-[1200px] mx-auto px-8 lg:px-12">
+          <div className="max-w-2xl">
+            <h1 className="font-display text-6xl lg:text-7xl xl:text-[5rem] font-bold text-foreground tracking-tight text-left">
+              <span
+                className="block opacity-0 animate-fade-in-up"
+                style={{ animationDelay: "0.5s" }}
+              >
+                Built to stand out.
+              </span>
+              <span
+                className="block opacity-0 animate-fade-in-up mt-4"
+                style={{ animationDelay: "0.9s" }}
+              >
+                Not to blend in.
+              </span>
+            </h1>
+          </div>
         </div>
       </div>
 
