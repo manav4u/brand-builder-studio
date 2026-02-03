@@ -15,7 +15,7 @@ const HeroSection = () => {
         <img
           src="/IMG_20260204_010438.jpg"
           alt="Golden figure standing out from the crowd"
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full object-contain"
         />
         {/* Subtle gradient overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
