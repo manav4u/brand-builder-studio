@@ -67,10 +67,11 @@ export function Highlighter({
       multiline,
     }
 
-    const annotation = annotate(element, annotationConfig)
-
-    annotationRef.current = annotation
-    annotationRef.current.show()
+    const timeoutId = setTimeout(() => {
+      const annotation = annotate(element, annotationConfig)
+      annotationRef.current = annotation
+      annotationRef.current.show()
+    }, delay)
 
     const resizeObserver = new ResizeObserver(() => {
       annotation.hide()
