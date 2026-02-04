@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Highlighter } from "@/components/ui/highlighter";
 
@@ -22,39 +22,43 @@ const ManifestoRow = ({
   const rowRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
+  // Row is considered "active" when mostly in view (snapped near top)
+  const isActive = useInView(rowRef, { amount: 0.7, once: true });
+
   const { scrollYProgress } = useScroll({
     target: rowRef,
     offset: ["start start", "end start"],
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
   const imageSrc = isMobile ? mobileImage : desktopImage;
 
   const textContent = (
     <motion.div
       className="flex flex-col justify-center px-8 md:px-20 py-4 md:py-0"
-      initial={{ opacity: 0, x: imageFirst ? 40 : -40 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, amount: 0.6 }}
+      initial={{ opacity: 0, y: 80 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.8 }}
     >
       <motion.h2
         className="font-display font-bold uppercase text-foreground text-[2.5rem] md:text-[4.5rem] leading-[1.1] mb-5"
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        viewport={{ once: true }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.8 }}
       >
         {headline}
       </motion.h2>
 
       <motion.p
         className="font-body text-muted-foreground text-lg md:text-xl leading-relaxed max-w-xl"
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.08, ease: "easeOut" }}
-        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.08, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.8 }}
       >
+        {/* Pass isActive to Highlighter via context by cloning */}
         {subtext}
       </motion.p>
     </motion.div>
@@ -63,12 +67,12 @@ const ManifestoRow = ({
   const imageContent = (
     <div className="relative w-full h-[48vh] md:h-full overflow-hidden">
       <motion.div
-        className="absolute inset-0 w-full h-[115%]"
+        className="absolute inset-0 w-full h-[112%]"
         style={{ y: imageY }}
-        initial={{ opacity: 0, scale: 1.04 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        viewport={{ once: true, amount: 0.6 }}
+        viewport={{ once: true, amount: 0.8 }}
       >
         <img src={imageSrc} alt="" className="w-full h-full object-cover" />
         <div
@@ -87,10 +91,10 @@ const ManifestoRow = ({
     <motion.div
       ref={rowRef}
       className="h-screen snap-start grid grid-cols-1 md:grid-cols-2 bg-background"
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 120 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, amount: 0.6 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.8 }}
     >
       {isMobile ? (
         <>
@@ -113,7 +117,7 @@ const ManifestoRow = ({
 };
 
 const ManifestoSection = () => {
-  const strapText = "✦ DIGITAL IDENTITY ✦ VISUAL IMPACT ✦ ENGINEER ATTENTION ";
+  const strapText = "•✦ DIGITAL IDENTITY ✦ VISUAL IMPACT ✦ ENGINEER ATTENTION ";
   const rows = [
     {
       headline: (
