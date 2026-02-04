@@ -4,7 +4,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Highlighter } from "@/components/ui/highlighter";
 interface ManifestoRowProps {
   headline: React.ReactNode;
-  subtext: string;
+  subtext: React.ReactNode;
   desktopImage: string;
   mobileImage: string;
   imageFirst?: boolean;
