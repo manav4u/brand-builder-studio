@@ -1,27 +1,24 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 
 const ManifestoSection = () => {
   const containerRef = useRef<HTMLElement>(null);
   const strapText = "• DIGITAL IDENTITY • VISUAL IMPACT • ENGINEER ATTENTION • ";
+  
+  // Track maximum scroll progress for one-way latch
+  const [maxProgress, setMaxProgress] = useState(0);
 
-  // Track scroll progress within this section
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // "Permanent Ink" - once revealed, stays revealed (clamp at 1)
-  const line1Revealed = useTransform(scrollYProgress, [0, 0.12], [0, 1]);
-  const line2Revealed = useTransform(scrollYProgress, [0.15, 0.35], [0, 1]);
-  const line3Revealed = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
-  const line4Revealed = useTransform(scrollYProgress, [0.65, 0.85], [0, 1]);
-
-  // Active state for dimming - tracks which line is currently "active"
-  const line1Active = useTransform(scrollYProgress, [0, 0.12, 0.2], [0, 1, 0]);
-  const line2Active = useTransform(scrollYProgress, [0.15, 0.35, 0.45], [0, 1, 0]);
-  const line3Active = useTransform(scrollYProgress, [0.4, 0.6, 0.7], [0, 1, 0]);
-  const line4Active = useTransform(scrollYProgress, [0.65, 0.85, 1], [0, 1, 1]);
+  // Update max progress (one-way latch)
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest > maxProgress) {
+      setMaxProgress(latest);
+    }
+  });
 
   const beats = [
     { text: "THE INTERNET IS DEAF.", color: "text-muted-foreground" },
@@ -30,12 +27,8 @@ const ManifestoSection = () => {
     { text: "I ENGINEER OBSESSION.", color: "text-gold" },
   ];
 
-  const lineTransforms = [
-    { revealed: line1Revealed, active: line1Active },
-    { revealed: line2Revealed, active: line2Active },
-    { revealed: line3Revealed, active: line3Active },
-    { revealed: line4Revealed, active: line4Active },
-  ];
+  // Strict reveal thresholds - mapped to scroll progress
+  const revealThresholds = [0.15, 0.4, 0.65, 0.85];
 
   return (
     <>
@@ -74,24 +67,29 @@ const ManifestoSection = () => {
         </div>
       </div>
 
-      {/* Pinned Scroll Manifesto Section */}
+      {/* Pinned Scroll Manifesto Section - 400vh tall */}
       <section
         ref={containerRef}
         className="relative bg-background"
-        style={{ height: "180vh" }}
+        style={{ height: "400vh" }}
       >
-        {/* Sticky Content Container - Centered vertically */}
+        {/* Sticky Content Container - Locked to viewport */}
         <div className="sticky top-0 h-screen flex items-center overflow-hidden">
           <div className="container mx-auto px-4 md:px-8 lg:px-16">
-            {/* Stacked Text - Left Aligned, Tight Spacing */}
-            <div className="flex flex-col items-start gap-0.5 md:gap-1 lg:gap-1.5">
+            {/* Stacked Text - Tight vertical packing */}
+            <div className="flex flex-col items-start gap-0" style={{ lineHeight: 1.1 }}>
               {beats.map((beat, index) => (
-                <AccumulatingLine
+                <MaskRevealLine
                   key={index}
                   text={beat.text}
                   colorClass={beat.color}
-                  revealed={lineTransforms[index].revealed}
-                  active={lineTransforms[index].active}
+                  isRevealed={maxProgress >= revealThresholds[index]}
+                  scrollProgress={scrollYProgress}
+                  revealAt={revealThresholds[index]}
+                  isActive={
+                    maxProgress >= revealThresholds[index] && 
+                    (index === beats.length - 1 || maxProgress < revealThresholds[index + 1])
+                  }
                 />
               ))}
             </div>
@@ -102,51 +100,47 @@ const ManifestoSection = () => {
   );
 };
 
-// Separate component for cleaner transform logic
-interface AccumulatingLineProps {
+// Mask Reveal Line Component
+interface MaskRevealLineProps {
   text: string;
   colorClass: string;
-  revealed: MotionValue<number>;
-  active: MotionValue<number>;
+  isRevealed: boolean;
+  scrollProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+  revealAt: number;
+  isActive: boolean;
 }
 
-const AccumulatingLine = ({ text, colorClass, revealed, active }: AccumulatingLineProps) => {
-  // "Permanent Ink" - once revealed (>0.1), always visible
-  // Opacity: 0 until revealed, then 1 when active, 0.3 when inactive
-  const opacity = useTransform(
-    [revealed, active] as MotionValue<number>[],
-    ([r, a]: number[]) => {
-      if (r < 0.1) return 0; // Not yet revealed
-      // Smooth interpolation between active (1) and inactive (0.35)
-      return 0.35 + (a * 0.65);
-    }
+const MaskRevealLine = ({ text, colorClass, isRevealed, scrollProgress, revealAt, isActive }: MaskRevealLineProps) => {
+  // Calculate reveal progress within the reveal window
+  const revealProgress = useTransform(
+    scrollProgress,
+    [revealAt - 0.1, revealAt],
+    [0, 1]
   );
 
-  // Scale: 1 when active, 0.97 when inactive (subtler)
-  const scale = useTransform(
-    [revealed, active] as MotionValue<number>[],
-    ([r, a]: number[]) => {
-      if (r < 0.1) return 0.98;
-      return 0.97 + (a * 0.03);
-    }
-  );
-
-  // Y position: slides up from 20px as it reveals (crisp entry)
-  const y = useTransform(revealed, [0, 1], [20, 0]);
+  // Y translation for mask reveal (100% to 0%)
+  const y = useTransform(revealProgress, [0, 1], ["100%", "0%"]);
 
   return (
-    <motion.h2
-      className={`font-body font-black text-[9vw] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[0.95] tracking-tight uppercase ${colorClass} origin-left`}
-      style={{
-        opacity,
-        scale,
-        y,
-        // Smooth transitions for the dimming effect
-        transition: "color 0.8s ease, filter 0.8s ease",
+    <div 
+      className="overflow-hidden"
+      style={{ 
+        visibility: isRevealed ? "visible" : "hidden",
       }}
     >
-      {text}
-    </motion.h2>
+      <motion.h2
+        className={`font-body font-black text-[9vw] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-tight uppercase ${colorClass} origin-left`}
+        style={{
+          y: isRevealed ? 0 : y,
+          opacity: isActive ? 1 : 0.35,
+          scale: isActive ? 1 : 0.97,
+          lineHeight: 1.1,
+          transition: "opacity 0.6s ease, scale 0.6s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+        }}
+      >
+        {text}
+      </motion.h2>
+    </div>
   );
 };
 
