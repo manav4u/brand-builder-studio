@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
-
+import { Highlighter } from "@/components/ui/highlighter";
 interface ManifestoRowProps {
   headline: React.ReactNode;
   subtext: string;
