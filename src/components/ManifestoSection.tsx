@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
-import ScrollFloat from "./ScrollFloat";
 
 interface ManifestoRowProps {
   headline: React.ReactNode;
@@ -34,30 +33,20 @@ const ManifestoRow = ({
   const imageSrc = isMobile ? mobileImage : desktopImage;
 
   const textContent = (
-    <div className="flex flex-col justify-center px-8 md:px-20 py-12 md:py-0">
+    <motion.div 
+      className="flex flex-col justify-center px-8 md:px-20 py-12 md:py-0"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      viewport={{ once: true, margin: "-100px" }}
+    >
       <h2 className="font-display font-bold uppercase text-foreground text-[2.5rem] md:text-[4.5rem] leading-[1.1] mb-6">
-        <ScrollFloat
-          animationDuration={1}
-          ease="back.inOut(2)"
-          scrollStart="center bottom+=50%"
-          scrollEnd="bottom bottom-=40%"
-          stagger={0.06}
-        >
-          {headline}
-        </ScrollFloat>
+        {headline}
       </h2>
       <p className="font-body text-muted-foreground text-lg md:text-xl leading-relaxed max-w-xl">
-        <ScrollFloat
-          animationDuration={0.8}
-          ease="power2.out"
-          scrollStart="center bottom+=60%"
-          scrollEnd="bottom bottom-=30%"
-          stagger={0.02}
-        >
-          {subtext}
-        </ScrollFloat>
+        {subtext}
       </p>
-    </div>
+    </motion.div>
   );
 
   const imageContent = (
