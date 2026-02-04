@@ -1,10 +1,10 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
-
+import { Highlighter } from "@/components/ui/highlighter";
 interface ManifestoRowProps {
   headline: React.ReactNode;
-  subtext: string;
+  subtext: React.ReactNode;
   desktopImage: string;
   mobileImage: string;
   imageFirst?: boolean;
@@ -107,15 +107,33 @@ const ManifestoSection = () => {
 
   const rows = [
     {
-      headline: <>THE INTERNET IS <span className="text-foreground">DEAF.</span></>,
+      headline: (
+        <>
+          THE INTERNET IS{" "}
+          <Highlighter action="underline" color="#FFD233" isView strokeWidth={3} animationDuration={800}>
+            INFINITE NOISE
+          </Highlighter>
+          .{" "}
+          <Highlighter action="highlight" color="#3E1A47" isView strokeWidth={2} animationDuration={600}>
+            DEAF.
+          </Highlighter>
+        </>
+      ),
       subtext: "In an ocean of infinite noise, visibility is a myth. You are shouting into a void that does not care.",
       desktopImage: "/crowd-desktop.jpg",
       mobileImage: "/crowd-mobile.jpeg",
       imageFirst: false,
     },
     {
-      headline: <>CLARITY IS THE ONLY <span className="text-foreground">LANGUAGE.</span></>,
-      subtext: "We strip away the chaos. We distill your signal until it cuts through the static like a knife.",
+      headline: (
+        <>
+          <Highlighter action="underline" color="#FFD233" isView strokeWidth={3} animationDuration={800}>
+            CLARITY
+          </Highlighter>{" "}
+          IS THE ONLY LANGUAGE.
+        </>
+      ),
+      subtext: "Confusion is for the amateur. I strip away the static until your signal becomes an undeniable, high-definition force.",
       desktopImage: "/clarity-desktop.jpg",
       mobileImage: "/clarity-mobile.jpeg",
       imageFirst: true,
@@ -129,8 +147,15 @@ const ManifestoSection = () => {
           </span>
         </>
       ),
-      subtext: "I don't just build websites. I build domains of influence that demand attention.",
-      desktopImage: "/shrine-deaktop.jpeg", // Note: using actual filename with typo
+      subtext: (
+        <>
+          I don't just build websites. I build domains of influence that demand attention—a{" "}
+          <Highlighter action="highlight" color="#3E1A47" isView strokeWidth={2} animationDuration={600}>
+            high-definition force
+          </Highlighter>.
+        </>
+      ),
+      desktopImage: "/shrine-deaktop.jpeg",
       mobileImage: "/shrine-mobile.jpeg",
       imageFirst: false,
     },
