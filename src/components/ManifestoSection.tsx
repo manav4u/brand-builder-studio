@@ -67,32 +67,35 @@ const ManifestoSection = () => {
         </div>
       </div>
 
-      {/* Pinned Scroll Manifesto Section - 250vh for faster scroll */}
+      {/* Pinned Scroll Manifesto Section - 200vh for one-scroll-one-line */}
       <section
         ref={containerRef}
-        className="relative bg-background"
-        style={{ height: "250vh" }}
+        className="relative bg-background z-10"
+        style={{ height: "200vh" }}
       >
         {/* Sticky Content Container - Locked to viewport, vertically centered */}
-        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-          <div className="container mx-auto px-4 md:px-8 lg:px-16">
-            {/* Stacked Text - Massive typography, left aligned */}
-            <div className="flex flex-col items-start gap-0" style={{ lineHeight: 1.0 }}>
-              {beats.map((beat, index) => (
-                <MaskRevealLine
-                  key={index}
-                  text={beat.text}
-                  colorClass={beat.color}
-                  isRevealed={maxProgress >= revealThresholds[index]}
-                  scrollProgress={scrollYProgress}
-                  revealAt={revealThresholds[index]}
-                  isActive={
-                    maxProgress >= revealThresholds[index] && 
-                    (index === beats.length - 1 || maxProgress < revealThresholds[index + 1])
-                  }
-                />
-              ))}
-            </div>
+        <div className="sticky top-0 h-screen flex items-center overflow-hidden w-full pl-[5%] pr-4">
+          {/* Stacked Text - Fluid typography, left aligned */}
+          <div 
+            className="flex flex-col items-start gap-0" 
+            style={{ 
+              lineHeight: "0.9",
+            }}
+          >
+            {beats.map((beat, index) => (
+              <MaskRevealLine
+                key={index}
+                text={beat.text}
+                colorClass={beat.color}
+                isRevealed={maxProgress >= revealThresholds[index]}
+                scrollProgress={scrollYProgress}
+                revealAt={revealThresholds[index]}
+                isActive={
+                  maxProgress >= revealThresholds[index] && 
+                  (index === beats.length - 1 || maxProgress < revealThresholds[index + 1])
+                }
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -131,11 +134,13 @@ const MaskRevealLine = ({ text, colorClass, isRevealed, scrollProgress, revealAt
       <motion.h2
         className={`font-body font-black tracking-tight uppercase ${colorClass} origin-left`}
         style={{
-          fontSize: "clamp(2rem, 12vh, 10rem)",
+          fontSize: "min(10vw, 12vh)",
           y: isRevealed ? 0 : y,
           opacity: isActive ? 1 : 0.35,
           scale: isActive ? 1 : 0.97,
-          lineHeight: 1.0,
+          lineHeight: "inherit",
+          overflowWrap: "break-word",
+          hyphens: "manual",
           transition: "opacity 0.6s ease, scale 0.6s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
