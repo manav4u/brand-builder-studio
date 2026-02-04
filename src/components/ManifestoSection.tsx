@@ -27,8 +27,8 @@ const ManifestoSection = () => {
     { text: "I ENGINEER OBSESSION.", color: "text-gold" },
   ];
 
-  // Strict reveal thresholds - mapped to scroll progress
-  const revealThresholds = [0.15, 0.4, 0.65, 0.85];
+  // Faster reveal thresholds for 250vh track
+  const revealThresholds = [0.15, 0.35, 0.55, 0.75];
 
   return (
     <>
@@ -67,17 +67,17 @@ const ManifestoSection = () => {
         </div>
       </div>
 
-      {/* Pinned Scroll Manifesto Section - 400vh tall */}
+      {/* Pinned Scroll Manifesto Section - 250vh for faster scroll */}
       <section
         ref={containerRef}
         className="relative bg-background"
-        style={{ height: "400vh" }}
+        style={{ height: "250vh" }}
       >
-        {/* Sticky Content Container - Locked to viewport */}
-        <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+        {/* Sticky Content Container - Locked to viewport, vertically centered */}
+        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
           <div className="container mx-auto px-4 md:px-8 lg:px-16">
-            {/* Stacked Text - Tight vertical packing */}
-            <div className="flex flex-col items-start gap-0" style={{ lineHeight: 1.1 }}>
+            {/* Stacked Text - Massive typography, left aligned */}
+            <div className="flex flex-col items-start gap-0" style={{ lineHeight: 1.0 }}>
               {beats.map((beat, index) => (
                 <MaskRevealLine
                   key={index}
@@ -129,12 +129,13 @@ const MaskRevealLine = ({ text, colorClass, isRevealed, scrollProgress, revealAt
       }}
     >
       <motion.h2
-        className={`font-body font-black text-[9vw] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-tight uppercase ${colorClass} origin-left`}
+        className={`font-body font-black tracking-tight uppercase ${colorClass} origin-left`}
         style={{
+          fontSize: "clamp(2rem, 12vh, 10rem)",
           y: isRevealed ? 0 : y,
           opacity: isActive ? 1 : 0.35,
           scale: isActive ? 1 : 0.97,
-          lineHeight: 1.1,
+          lineHeight: 1.0,
           transition: "opacity 0.6s ease, scale 0.6s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
