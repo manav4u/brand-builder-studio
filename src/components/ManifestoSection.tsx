@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import ScrollFloat from "./ScrollFloat";
 
 interface ManifestoRowProps {
   headline: React.ReactNode;
