@@ -33,10 +33,10 @@ const ManifestoRow = ({
   const textContent = (
     <motion.div
       className="flex flex-col justify-center px-8 md:px-20 py-8 md:py-0"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      viewport={{ once: true, margin: "-100px" }}
+      initial={{ opacity: 0, x: imageFirst ? 40 : -40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true }}
     >
       <motion.h2
         className="font-display font-bold uppercase text-foreground text-[2.5rem] md:text-[4.5rem] leading-[1.1] mb-6"
@@ -65,9 +65,9 @@ const ManifestoRow = ({
       <motion.div
         className="absolute inset-0 w-full h-[120%]"
         style={{ y: imageY }}
-        initial={{ scale: 1.03 }}
-        whileInView={{ scale: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
+        initial={{ opacity: 0, scale: 1.06 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
         viewport={{ once: true }}
       >
         <img src={imageSrc} alt="" className="w-full h-full object-cover" />
@@ -87,10 +87,10 @@ const ManifestoRow = ({
     <motion.div
       ref={rowRef}
       className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-background"
-      initial={{ opacity: 0.6 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      viewport={{ once: true, margin: "-100px" }}
+      initial={{ opacity: 0, y: 60, filter: "blur(6px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: "-120px" }}
     >
       {isMobile ? (
         <>
@@ -113,14 +113,14 @@ const ManifestoRow = ({
 };
 
 const ManifestoSection = () => {
-  const strapText = "• DIGITAL IDENTITY • VISUAL IMPACT • ENGINEER ATTENTION • ";
+  const strapText = " ✦ DIGITAL IDENTITY ✦ VISUAL IMPACT ✦ ENGINEER ATTENTION ";
 
   const rows = [
     {
       headline: (
         <>
           THE INTERNET IS{" "}
-          <Highlighter action="highlight" color="#3E1A47" strokeWidth={2} animationDuration={600} isView>
+          <Highlighter action="highlight" color="#3E1A47" strokeWidth={2} animationDuration={200} isView>
             DEAF.
           </Highlighter>
         </>
@@ -128,7 +128,7 @@ const ManifestoSection = () => {
       subtext: (
         <>
           In an ocean of infinite noise,{" "}
-          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={600} isView>
+          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={200} isView>
             visibility is a myth.
           </Highlighter>{" "}
           You are shouting into a void that does not care.
@@ -141,7 +141,7 @@ const ManifestoSection = () => {
     {
       headline: (
         <>
-          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={600} isView>
+          <Highlighter action="highlight" color="#3E1A47" strokeWidth={2} animationDuration={200} isView>
             CLARITY
           </Highlighter>{" "}
           IS THE ONLY LANGUAGE.
@@ -150,7 +150,7 @@ const ManifestoSection = () => {
       subtext: (
         <>
           I cut through the chaos. I shape your signal until it stands alone, turning confusion into an{" "}
-          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={600} isView>
+          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={200} isView>
             undeniable force.
           </Highlighter>
         </>
@@ -171,7 +171,7 @@ const ManifestoSection = () => {
       subtext: (
         <>
           I don't just build websites. I build{" "}
-          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={600} isView>
+          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={200} isView>
             domains of influence.
           </Highlighter>{" "}
           that demand attention and command the room.
@@ -188,7 +188,7 @@ const ManifestoSection = () => {
       {/* X-Strap Separator */}
       <div className="relative h-24 md:h-28 overflow-hidden bg-background">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-10 md:h-12 bg-plum-shadow -rotate-[6deg]">
-          <div className="flex items-center whitespace-nowrap animate-marquee-left hover:[animation-play-state:paused]">
+          <div className="flex items-center whitespace-nowrap animate-marquee-left hover:[animation-play-state:paused] active:[animation-play-state:paused]">
             {[...Array(12)].map((_, i) => (
               <span key={i} className="font-display italic text-base md:text-lg text-gold/80 mx-2">
                 {strapText}
@@ -198,7 +198,7 @@ const ManifestoSection = () => {
         </div>
 
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-10 md:h-12 bg-plum-shadow rotate-[6deg]">
-          <div className="flex items-center whitespace-nowrap animate-marquee-right hover:[animation-play-state:paused]">
+          <div className="flex items-center whitespace-nowrap animate-marquee-right hover:[animation-play-state:paused] active:[animation-play-state:paused]">
             {[...Array(12)].map((_, i) => (
               <span key={i} className="font-display italic text-base md:text-lg text-foreground/70 mx-2">
                 {strapText}
