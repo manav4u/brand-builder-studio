@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 
 const ManifestoSection = () => {
@@ -20,14 +20,7 @@ const ManifestoSection = () => {
     }
   });
 
-  const beats = [
-    { text: "THE INTERNET IS DEAF.", color: "text-muted-foreground" },
-    { text: "CLARITY IS THE ONLY LANGUAGE.", color: "text-foreground" },
-    { text: "I DON'T JUST DESIGN.", color: "text-muted-foreground" },
-    { text: "I ENGINEER OBSESSION.", color: "text-gold" },
-  ];
-
-  // Faster reveal thresholds for 250vh track
+  // Reveal thresholds for 200vh track
   const revealThresholds = [0.15, 0.35, 0.55, 0.75];
 
   return (
@@ -74,28 +67,99 @@ const ManifestoSection = () => {
         style={{ height: "200vh" }}
       >
         {/* Sticky Content Container - Locked to viewport, vertically centered */}
-        <div className="sticky top-0 h-screen flex items-center overflow-hidden w-full pl-[5%] pr-4">
-          {/* Stacked Text - Fluid typography, left aligned */}
+        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden w-full px-4 md:px-8">
+          {/* Stacked Text - Bento typographic grid, centered */}
           <div 
-            className="flex flex-col items-start gap-0" 
-            style={{ 
-              lineHeight: "0.9",
-            }}
+            className="flex flex-col items-center gap-0 w-full max-w-[95vw]" 
+            style={{ lineHeight: "0.85" }}
           >
-            {beats.map((beat, index) => (
-              <MaskRevealLine
-                key={index}
-                text={beat.text}
-                colorClass={beat.color}
-                isRevealed={maxProgress >= revealThresholds[index]}
-                scrollProgress={scrollYProgress}
-                revealAt={revealThresholds[index]}
-                isActive={
-                  maxProgress >= revealThresholds[index] && 
-                  (index === beats.length - 1 || maxProgress < revealThresholds[index + 1])
-                }
-              />
-            ))}
+            {/* Line 1: "THE INTERNET" (small) + "IS DEAF." (huge) */}
+            <BentoLine
+              isRevealed={maxProgress >= revealThresholds[0]}
+              scrollProgress={scrollYProgress}
+              revealAt={revealThresholds[0]}
+              isActive={maxProgress >= revealThresholds[0] && maxProgress < revealThresholds[1]}
+            >
+              <div className="flex items-baseline justify-center gap-2 md:gap-4 flex-wrap">
+                <span 
+                  className="font-body font-medium uppercase text-muted-foreground/70"
+                  style={{ fontSize: "clamp(1rem, 3vw, 2.5rem)" }}
+                >
+                  THE INTERNET
+                </span>
+                <span 
+                  className="font-display font-bold uppercase text-foreground"
+                  style={{ fontSize: "clamp(2.5rem, 13vw, 12rem)", letterSpacing: "-0.02em" }}
+                >
+                  IS DEAF.
+                </span>
+              </div>
+            </BentoLine>
+
+            {/* Line 2: "CLARITY" (massive, nearly full width) */}
+            <BentoLine
+              isRevealed={maxProgress >= revealThresholds[1]}
+              scrollProgress={scrollYProgress}
+              revealAt={revealThresholds[1]}
+              isActive={maxProgress >= revealThresholds[1] && maxProgress < revealThresholds[2]}
+            >
+              <span 
+                className="font-display font-bold uppercase text-foreground block text-center"
+                style={{ 
+                  fontSize: "clamp(3rem, 18vw, 16rem)", 
+                  letterSpacing: "-0.03em",
+                  lineHeight: "0.8"
+                }}
+              >
+                CLARITY
+              </span>
+            </BentoLine>
+
+            {/* Line 3: "IS THE ONLY" (small) + "LANGUAGE" (large) */}
+            <BentoLine
+              isRevealed={maxProgress >= revealThresholds[2]}
+              scrollProgress={scrollYProgress}
+              revealAt={revealThresholds[2]}
+              isActive={maxProgress >= revealThresholds[2] && maxProgress < revealThresholds[3]}
+            >
+              <div className="flex items-baseline justify-center gap-2 md:gap-4 flex-wrap">
+                <span 
+                  className="font-body font-medium uppercase text-muted-foreground/70"
+                  style={{ fontSize: "clamp(0.875rem, 3vw, 2.5rem)" }}
+                >
+                  IS THE ONLY
+                </span>
+                <span 
+                  className="font-display font-bold uppercase text-foreground"
+                  style={{ fontSize: "clamp(2rem, 10vw, 9rem)", letterSpacing: "-0.02em" }}
+                >
+                  LANGUAGE.
+                </span>
+              </div>
+            </BentoLine>
+
+            {/* Line 4: "I ENGINEER" (small) + "OBSESSION" (huge, gold, italic) */}
+            <BentoLine
+              isRevealed={maxProgress >= revealThresholds[3]}
+              scrollProgress={scrollYProgress}
+              revealAt={revealThresholds[3]}
+              isActive={maxProgress >= revealThresholds[3]}
+            >
+              <div className="flex items-baseline justify-center gap-2 md:gap-4 flex-wrap">
+                <span 
+                  className="font-body font-medium uppercase text-muted-foreground/70"
+                  style={{ fontSize: "clamp(0.875rem, 3vw, 2.5rem)" }}
+                >
+                  I ENGINEER
+                </span>
+                <span 
+                  className="font-display font-bold italic uppercase text-gold"
+                  style={{ fontSize: "clamp(2.5rem, 14vw, 13rem)", letterSpacing: "-0.02em" }}
+                >
+                  OBSESSION.
+                </span>
+              </div>
+            </BentoLine>
           </div>
         </div>
       </section>
@@ -103,17 +167,16 @@ const ManifestoSection = () => {
   );
 };
 
-// Mask Reveal Line Component
-interface MaskRevealLineProps {
-  text: string;
-  colorClass: string;
+// Bento Line Component with mask reveal
+interface BentoLineProps {
+  children: React.ReactNode;
   isRevealed: boolean;
   scrollProgress: ReturnType<typeof useScroll>["scrollYProgress"];
   revealAt: number;
   isActive: boolean;
 }
 
-const MaskRevealLine = ({ text, colorClass, isRevealed, scrollProgress, revealAt, isActive }: MaskRevealLineProps) => {
+const BentoLine = ({ children, isRevealed, scrollProgress, revealAt, isActive }: BentoLineProps) => {
   // Calculate reveal progress within the reveal window
   const revealProgress = useTransform(
     scrollProgress,
@@ -126,26 +189,22 @@ const MaskRevealLine = ({ text, colorClass, isRevealed, scrollProgress, revealAt
 
   return (
     <div 
-      className="overflow-hidden"
+      className="overflow-hidden w-full"
       style={{ 
         visibility: isRevealed ? "visible" : "hidden",
       }}
     >
-      <motion.h2
-        className={`font-body font-black tracking-tight uppercase ${colorClass} origin-left`}
+      <motion.div
+        className="origin-center"
         style={{
-          fontSize: "min(10vw, 12vh)",
           y: isRevealed ? 0 : y,
-          opacity: isActive ? 1 : 0.35,
-          scale: isActive ? 1 : 0.97,
-          lineHeight: "inherit",
-          overflowWrap: "break-word",
-          hyphens: "manual",
+          opacity: isActive ? 1 : 0.4,
+          scale: isActive ? 1 : 0.98,
           transition: "opacity 0.6s ease, scale 0.6s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
-        {text}
-      </motion.h2>
+        {children}
+      </motion.div>
     </div>
   );
 };
