@@ -81,13 +81,7 @@ export function Highlighter({
     }
   }, [
     shouldShow,
-    action,
-    color,
-    strokeWidth,
-    animationDuration,
-    iterations,
-    padding,
-    multiline,
+    delay,
   ])
 
   return (

@@ -110,16 +110,24 @@ const ManifestoSection = () => {
       headline: (
         <>
           THE INTERNET IS{" "}
-          <Highlighter action="underline" color="#FFD233" isView strokeWidth={3} animationDuration={800}>
-            INFINITE NOISE
-          </Highlighter>
-          .{" "}
           <Highlighter action="highlight" color="#3E1A47" isView strokeWidth={2} animationDuration={600}>
             DEAF.
           </Highlighter>
         </>
       ),
-      subtext: "In an ocean of infinite noise, visibility is a myth. You are shouting into a void that does not care.",
+      subtext: (
+        <>
+          In an ocean of{" "}
+          <Highlighter action="underline" color="#FFD233" isView strokeWidth={3} animationDuration={600} delay={400}>
+            infinite noise
+          </Highlighter>
+          ,{" "}
+          <Highlighter action="highlight" color="#3E1A47" isView strokeWidth={2} animationDuration={600} delay={600}>
+            visibility is a myth.
+          </Highlighter>{" "}
+          You are shouting into a void that does not care.
+        </>
+      ),
       desktopImage: "/crowd-desktop.jpg",
       mobileImage: "/crowd-mobile.jpeg",
       imageFirst: false,
@@ -127,13 +135,31 @@ const ManifestoSection = () => {
     {
       headline: (
         <>
-          <Highlighter action="underline" color="#FFD233" isView strokeWidth={3} animationDuration={800}>
+          <Highlighter action="underline" color="#FFD233" isView strokeWidth={3} animationDuration={600}>
             CLARITY
           </Highlighter>{" "}
-          IS THE ONLY LANGUAGE.
+          IS THE{" "}
+          <Highlighter action="highlight" color="#3E1A47" isView strokeWidth={2} animationDuration={600} delay={200}>
+            ONLY LANGUAGE.
+          </Highlighter>
         </>
       ),
-      subtext: "Confusion is for the amateur. I strip away the static until your signal becomes an undeniable, high-definition force.",
+      subtext: (
+        <>
+          We{" "}
+          <Highlighter action="highlight" color="#3E1A47" isView strokeWidth={2} animationDuration={600} delay={400}>
+            strip away the chaos.
+          </Highlighter>{" "}
+          We distill your{" "}
+          <Highlighter action="underline" color="#FFD233" isView strokeWidth={3} animationDuration={600} delay={600}>
+            signal
+          </Highlighter>{" "}
+          until it cuts through the static like a knife, turning confusion into an{" "}
+          <Highlighter action="highlight" color="#FFD233" isView strokeWidth={2} animationDuration={600} delay={800}>
+            undeniable force.
+          </Highlighter>
+        </>
+      ),
       desktopImage: "/clarity-desktop.jpg",
       mobileImage: "/clarity-mobile.jpeg",
       imageFirst: true,
@@ -142,17 +168,26 @@ const ManifestoSection = () => {
       headline: (
         <>
           I ENGINEER{" "}
-          <span className="text-gold italic" style={{ fontSize: "1.3em" }}>
+          <span style={{ color: "#FFD233", fontStyle: "italic", fontSize: "1.3em" }}>
             OBSESSION.
           </span>
         </>
       ),
       subtext: (
         <>
-          I don't just build websites. I build domains of influence that demand attention—a{" "}
-          <Highlighter action="highlight" color="#3E1A47" isView strokeWidth={2} animationDuration={600}>
-            high-definition force
-          </Highlighter>.
+          I don't just{" "}
+          <Highlighter action="underline" color="#3E1A47" isView strokeWidth={2} animationDuration={600} delay={400}>
+            build websites.
+          </Highlighter>{" "}
+          I build{" "}
+          <Highlighter action="highlight" color="#FFD233" isView strokeWidth={2} animationDuration={600} delay={600}>
+            domains of influence
+          </Highlighter>{" "}
+          that{" "}
+          <Highlighter action="underline" color="#FFD233" isView strokeWidth={3} animationDuration={600} delay={800}>
+            demand attention
+          </Highlighter>{" "}
+          and command the room.
         </>
       ),
       desktopImage: "/shrine-deaktop.jpeg",
