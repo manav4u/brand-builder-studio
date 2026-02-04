@@ -1,42 +1,30 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 const ManifestoSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
 
-  // Strap 1 moves left as user scrolls down
-  const strap1X = useTransform(scrollYProgress, [0, 1], ["10%", "-30%"]);
-  // Strap 2 moves right as user scrolls down
-  const strap2X = useTransform(scrollYProgress, [0, 1], ["-10%", "30%"]);
-
-  const strapText = "• DIGITAL IDENTITY • VISUAL IMPACT ";
+  const strapText = "• DIGITAL IDENTITY • VISUAL IMPACT • ENGINEER ATTENTION • ";
 
   // Text reveal animation variants
   const containerVariants = {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
       },
     },
   };
 
-  const wordVariants = {
+  const lineVariants = {
     hidden: {
-      y: 80,
+      y: 100,
       opacity: 0,
-      clipPath: "inset(100% 0% 0% 0%)",
     },
     visible: {
       y: 0,
       opacity: 1,
-      clipPath: "inset(0% 0% 0% 0%)",
       transition: {
         duration: 0.8,
         ease: [0.25, 0.46, 0.45, 0.94] as const,
@@ -45,117 +33,87 @@ const ManifestoSection = () => {
   };
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative min-h-screen bg-background overflow-hidden py-32 md:py-40"
-    >
-      {/* Crossed Straps Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Strap 1 - Plum Shadow, rotates -5deg, moves left */}
-        <motion.div
-          style={{ x: strap1X }}
-          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[200vw] py-6 md:py-8 bg-plum-shadow/80 -rotate-[5deg]"
-        >
-          <div className="flex whitespace-nowrap">
-            {[...Array(8)].map((_, i) => (
+    <>
+      {/* X-Shaped Marquee Separator - Between Hero and Manifesto */}
+      <div className="relative h-24 md:h-32 overflow-hidden bg-background">
+        {/* Strap A - Rotated -3deg, moves left */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-12 md:h-14 bg-plum-shadow -rotate-[3deg] group hover:[animation-play-state:paused] active:[animation-play-state:paused]">
+          <div className="flex whitespace-nowrap animate-marquee-left hover:[animation-play-state:paused] active:[animation-play-state:paused]">
+            {[...Array(12)].map((_, i) => (
               <span
                 key={i}
-                className="font-display italic text-3xl md:text-5xl lg:text-6xl text-white/30 mx-4"
+                className="font-display italic text-lg md:text-xl text-gold/80 mx-2"
               >
                 {strapText}
               </span>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Strap 2 - Gold, rotates +5deg, moves right */}
-        <motion.div
-          style={{ x: strap2X }}
-          className="absolute top-[55%] left-1/2 -translate-x-1/2 w-[200vw] py-6 md:py-8 bg-gold/90 rotate-[5deg]"
-        >
-          <div className="flex whitespace-nowrap">
-            {[...Array(8)].map((_, i) => (
+        {/* Strap B - Rotated +3deg, moves right */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-12 md:h-14 bg-plum-shadow rotate-[3deg] group hover:[animation-play-state:paused] active:[animation-play-state:paused]">
+          <div className="flex whitespace-nowrap animate-marquee-right hover:[animation-play-state:paused] active:[animation-play-state:paused]">
+            {[...Array(12)].map((_, i) => (
               <span
                 key={i}
-                className="font-display italic text-3xl md:text-5xl lg:text-6xl text-background mx-4"
+                className="font-display italic text-lg md:text-xl text-foreground/70 mx-2"
               >
                 {strapText}
               </span>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Kinetic Typography Content */}
-      <motion.div
-        className="relative z-10 container mx-auto px-6 md:px-12 lg:px-20 min-h-[80vh] flex flex-col justify-center"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+      {/* Manifesto Section - Bold Stacked Typography */}
+      <section
+        ref={sectionRef}
+        className="relative min-h-screen bg-background overflow-hidden py-20 md:py-32"
       >
-        {/* Masonry-style text layout */}
-        <div className="grid grid-cols-12 gap-4 md:gap-8 items-center">
-          {/* Top-left small phrase */}
-          <motion.div
-            variants={wordVariants}
-            className="col-span-12 md:col-span-5 lg:col-span-4"
-          >
-            <p className="font-body text-sm md:text-base lg:text-lg text-lavender/70 leading-relaxed">
-              In a digital ocean<br />of infinite noise...
-            </p>
-          </motion.div>
-
-          {/* Spacer */}
-          <div className="hidden md:block md:col-span-7 lg:col-span-8" />
-
-          {/* CLARITY IS POWER - Massive centered */}
-          <motion.div
-            variants={wordVariants}
-            className="col-span-12 text-center my-8 md:my-12"
-          >
-            <h2 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[8rem] xl:text-[10rem] text-foreground leading-none tracking-tight">
-              CLARITY IS
-              <br />
-              <span className="block">POWER</span>
-            </h2>
-          </motion.div>
-
-          {/* "I engineer" - Medium Sans-Serif */}
-          <div className="col-span-12 md:col-span-6 lg:col-span-5">
-            <motion.p
-              variants={wordVariants}
-              className="font-body text-xl md:text-2xl lg:text-3xl text-lavender text-right md:text-left"
+        <motion.div
+          className="container mx-auto px-6 md:px-12 lg:px-20"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          {/* Stacked Text - Left Aligned */}
+          <div className="flex flex-col items-start gap-2 md:gap-4">
+            {/* Line 1: IN A DIGITAL OCEAN */}
+            <motion.h2
+              variants={lineVariants}
+              className="font-body font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground leading-none tracking-tight uppercase"
             >
-              I engineer
-            </motion.p>
+              IN A DIGITAL OCEAN
+            </motion.h2>
+
+            {/* Line 2: OF INFINITE NOISE */}
+            <motion.h2
+              variants={lineVariants}
+              className="font-body font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground leading-none tracking-tight uppercase"
+            >
+              OF INFINITE NOISE
+            </motion.h2>
+
+            {/* Line 3: CLARITY IS POWER. - Extra Large, Gold */}
+            <motion.h2
+              variants={lineVariants}
+              className="font-body font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-gold leading-none tracking-tight uppercase mt-4 md:mt-8"
+            >
+              CLARITY IS POWER.
+            </motion.h2>
+
+            {/* Line 4: I ENGINEER ATTENTION. - Extra Large, White */}
+            <motion.h2
+              variants={lineVariants}
+              className="font-body font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-foreground leading-none tracking-tight uppercase"
+            >
+              I ENGINEER ATTENTION.
+            </motion.h2>
           </div>
-
-          {/* Spacer */}
-          <div className="hidden lg:block lg:col-span-2" />
-
-          {/* ATTENTION - Massive, Gold, Display font */}
-          <motion.div
-            variants={wordVariants}
-            className="col-span-12 md:col-span-6 lg:col-span-5"
-          >
-            <h3 className="font-display italic text-5xl sm:text-6xl md:text-7xl lg:text-[6rem] xl:text-[8rem] text-gold leading-none tracking-tight text-left md:text-right">
-              ATTENTION
-            </h3>
-          </motion.div>
-
-          {/* Final tagline */}
-          <motion.div
-            variants={wordVariants}
-            className="col-span-12 text-center mt-12 md:mt-16"
-          >
-            <p className="font-body text-base md:text-lg lg:text-xl text-lavender/60 italic">
-              Your brand wasn't made to whisper.
-            </p>
-          </motion.div>
-        </div>
-      </motion.div>
-    </section>
+        </motion.div>
+      </section>
+    </>
   );
 };
 
