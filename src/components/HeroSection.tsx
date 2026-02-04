@@ -1,5 +1,4 @@
 import { ChevronDown } from "lucide-react";
-import GradualBlur from "./GradualBlur";
 
 const HeroSection = () => {
   const handleScrollDown = () => {
@@ -17,7 +16,7 @@ const HeroSection = () => {
         style={{
           backgroundImage: "url('/hero-mobile.jpg')",
           backgroundSize: "contain",
-         backgroundPosition: "top center",
+          backgroundPosition: "top center",
           backgroundRepeat: "no-repeat",
         }}
       />
@@ -28,19 +27,9 @@ const HeroSection = () => {
         style={{
           backgroundImage: "url('/hero-desktop.jpg')",
           backgroundSize: "cover",
-         backgroundPosition: "top right",
+          backgroundPosition: "top right",
           backgroundRepeat: "no-repeat",
         }}
-      />
-
-      {/* Gradual blur effect at top for header area */}
-      <GradualBlur
-        position="top"
-        height="7rem"
-        strength={2}
-        divCount={2}
-        exponential
-        opacity={1}
       />
       
       {/* Premium gradient overlay - transparent top to Midnight Aubergine bottom */}
