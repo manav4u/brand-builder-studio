@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Highlighter } from "@/components/ui/highlighter";
 
@@ -22,65 +22,42 @@ const ManifestoRow = ({
   const rowRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  // Row is considered "active" when mostly in view (snapped near top)
-  const isActive = useInView(rowRef, { amount: 0.7, once: true });
-
   const { scrollYProgress } = useScroll({
     target: rowRef,
-    offset: ["start start", "end start"],
+    offset: ["start 80%", "end 20%"],
   });
+
+  // Smooth, subtle entrance (no popping)
+  const opacity = useTransform(scrollYProgress, [0, 0.25], [0, 1]);
+  const y = useTransform(scrollYProgress, [0, 0.25], [12, 0]);
 
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
   const imageSrc = isMobile ? mobileImage : desktopImage;
 
   const textContent = (
     <motion.div
-      className="flex flex-col justify-center px-8 md:px-20 py-4 md:py-0"
-      initial={{ opacity: 0, y: 80 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, amount: 0.8 }}
+      className="flex flex-col justify-center px-6 md:px-16 py-2 md:py-0"
+      style={{ opacity, y }}
     >
-      <motion.h2
-        className="font-display font-bold uppercase text-foreground text-[2.5rem] md:text-[4.5rem] leading-[1.1] mb-5"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.8 }}
-      >
+      <h2 className="font-display font-bold uppercase text-foreground text-[2.2rem] md:text-[4.2rem] leading-[1.05] mb-3">
         {headline}
-      </motion.h2>
-
-      <motion.p
-        className="font-body text-muted-foreground text-lg md:text-xl leading-relaxed max-w-xl"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.08, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.8 }}
-      >
-        {/* Pass isActive to Highlighter via context by cloning */}
+      </h2>
+      <p className="font-body text-muted-foreground text-base md:text-lg leading-snug max-w-xl">
         {subtext}
-      </motion.p>
+      </p>
     </motion.div>
   );
 
   const imageContent = (
-    <div className="relative w-full h-[48vh] md:h-full overflow-hidden">
-      <motion.div
-        className="absolute inset-0 w-full h-[112%]"
-        style={{ y: imageY }}
-        initial={{ opacity: 0, y: 80 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        viewport={{ once: true, amount: 0.8 }}
-      >
+    <div className="relative w-full h-[42vh] md:h-full overflow-hidden">
+      <motion.div className="absolute inset-0 w-full h-[108%]" style={{ y: imageY, opacity }}>
         <img src={imageSrc} alt="" className="w-full h-full object-cover" />
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: imageFirst
-              ? "linear-gradient(to left, transparent 65%, hsl(var(--background)) 100%)"
-              : "linear-gradient(to right, transparent 65%, hsl(var(--background)) 100%)",
+              ? "linear-gradient(to left, transparent 62%, hsl(var(--background)) 100%)"
+              : "linear-gradient(to right, transparent 62%, hsl(var(--background)) 100%)",
           }}
         />
       </motion.div>
@@ -88,14 +65,7 @@ const ManifestoRow = ({
   );
 
   return (
-    <motion.div
-      ref={rowRef}
-      className="h-screen snap-start grid grid-cols-1 md:grid-cols-2 bg-background"
-      initial={{ opacity: 0, y: 120 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, amount: 0.8 }}
-    >
+    <div ref={rowRef} className="min-h-[85vh] grid grid-cols-1 md:grid-cols-2 bg-background snap-start">
       {isMobile ? (
         <>
           {imageContent}
@@ -112,12 +82,12 @@ const ManifestoRow = ({
           {imageContent}
         </>
       )}
-    </motion.div>
+    </div>
   );
 };
 
 const ManifestoSection = () => {
-  const strapText = "•✦ DIGITAL IDENTITY ✦ VISUAL IMPACT ✦ ENGINEER ATTENTION ";
+  const strapText = "✦ DIGITAL IDENTITY ✦ VISUAL IMPACT ✦ ENGINEER ATTENTION ";
   const rows = [
     {
       headline: (
@@ -189,21 +159,21 @@ const ManifestoSection = () => {
   return (
     <>
       {/* X-Strap Separator */}
-      <div className="relative h-24 md:h-28 overflow-hidden bg-background">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-10 md:h-12 bg-plum-shadow -rotate-[6deg]">
-          <div className="flex items-center whitespace-nowrap animate-marquee-left hover:[animation-play-state:paused]">
+      <div className="relative h-20 md:h-24 overflow-hidden bg-background">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow -rotate-[6deg]">
+          <div className="flex items-center whitespace-nowrap animate-marquee-left">
             {[...Array(12)].map((_, i) => (
-              <span key={i} className="font-display italic text-base md:text-lg text-gold/80 mx-2">
+              <span key={i} className="font-display italic text-sm md:text-base text-gold/80 mx-2">
                 {strapText}
               </span>
             ))}
           </div>
         </div>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-10 md:h-12 bg-plum-shadow rotate-[6deg]">
-          <div className="flex items-center whitespace-nowrap animate-marquee-right hover:[animation-play-state:paused]">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow rotate-[6deg]">
+          <div className="flex items-center whitespace-nowrap animate-marquee-right">
             {[...Array(12)].map((_, i) => (
-              <span key={i} className="font-display italic text-base md:text-lg text-foreground/70 mx-2">
+              <span key={i} className="font-display italic text-sm md:text-base text-foreground/70 mx-2">
                 {strapText}
               </span>
             ))}
@@ -211,7 +181,7 @@ const ManifestoSection = () => {
         </div>
       </div>
 
-      {/* Page-level snap scrolling */}
+      {/* Manifesto Rows */}
       <section className="bg-background snap-y snap-mandatory">
         {rows.map((row, i) => (
           <ManifestoRow key={i} index={i} {...row} />
