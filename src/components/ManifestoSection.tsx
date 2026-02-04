@@ -27,7 +27,7 @@ const ManifestoRow = ({
     offset: ["start start", "end start"],
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
   const imageSrc = isMobile ? mobileImage : desktopImage;
 
   const textContent = (
@@ -35,14 +35,14 @@ const ManifestoRow = ({
       className="flex flex-col justify-center px-8 md:px-20 py-4 md:py-0"
       initial={{ opacity: 0, x: imageFirst ? 40 : -40 }}
       whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.6 }}
     >
       <motion.h2
         className="font-display font-bold uppercase text-foreground text-[2.5rem] md:text-[4.5rem] leading-[1.1] mb-5"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
         viewport={{ once: true }}
       >
         {headline}
@@ -50,9 +50,9 @@ const ManifestoRow = ({
 
       <motion.p
         className="font-body text-muted-foreground text-lg md:text-xl leading-relaxed max-w-xl"
-        initial={{ opacity: 0, y: 14 }}
+        initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+        transition={{ duration: 0.5, delay: 0.08, ease: "easeOut" }}
         viewport={{ once: true }}
       >
         {subtext}
@@ -65,10 +65,10 @@ const ManifestoRow = ({
       <motion.div
         className="absolute inset-0 w-full h-[115%]"
         style={{ y: imageY }}
-        initial={{ opacity: 0, scale: 1.05 }}
+        initial={{ opacity: 0, scale: 1.04 }}
         whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        viewport={{ once: true }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.6 }}
       >
         <img src={imageSrc} alt="" className="w-full h-full object-cover" />
         <div
@@ -87,10 +87,10 @@ const ManifestoRow = ({
     <motion.div
       ref={rowRef}
       className="h-screen snap-start grid grid-cols-1 md:grid-cols-2 bg-background"
-      initial={{ opacity: 0, y: 80 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.6 }}
     >
       {isMobile ? (
         <>
@@ -114,7 +114,6 @@ const ManifestoRow = ({
 
 const ManifestoSection = () => {
   const strapText = "✦ DIGITAL IDENTITY ✦ VISUAL IMPACT ✦ ENGINEER ATTENTION ";
-
   const rows = [
     {
       headline: (
@@ -208,10 +207,10 @@ const ManifestoSection = () => {
         </div>
       </div>
 
-      {/* Story Mode Scroll Zone */}
-      <section className="bg-background snap-y snap-mandatory h-screen overflow-y-scroll">
-        {rows.map((row, index) => (
-          <ManifestoRow key={index} index={index} {...row} />
+      {/* Page-level snap scrolling */}
+      <section className="bg-background snap-y snap-mandatory">
+        {rows.map((row, i) => (
+          <ManifestoRow key={i} index={i} {...row} />
         ))}
       </section>
     </>
