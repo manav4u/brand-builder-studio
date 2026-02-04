@@ -100,7 +100,8 @@ const ManifestoRow = ({
 };
 
 const ManifestoSection = () => {
-  const strapText = "✦ DIGITAL IDENTITY ✦ VISUAL IMPACT ✦ ENGINEER ATTENTION ";
+  const strapText = "•✦ DIGITAL IDENTITY ✦ VISUAL IMPACT ✦ ENGINEER ATTENTION ";
+
   const rows = [
     {
       headline: (
