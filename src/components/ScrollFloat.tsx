@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef, Children, isValidElement, cloneElement, ReactNode } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -16,6 +16,31 @@ interface ScrollFloatProps {
   stagger?: number;
 }
 
+// Recursively process children to wrap each character in a span
+const processChildren = (children: ReactNode): ReactNode => {
+  return Children.map(children, (child) => {
+    // If it's a string, split into characters
+    if (typeof child === "string") {
+      return child.split("").map((char, index) => (
+        <span className="inline-block char-animate" key={index}>
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ));
+    }
+    
+    // If it's a valid React element, recursively process its children
+    if (isValidElement(child)) {
+      const elementChild = child as React.ReactElement<{ children?: ReactNode; className?: string }>;
+      return cloneElement(elementChild, {
+        ...elementChild.props,
+        children: processChildren(elementChild.props.children),
+      });
+    }
+    
+    return child;
+  });
+};
+
 const ScrollFloat: React.FC<ScrollFloatProps> = ({
   children,
   scrollContainerRef,
@@ -27,17 +52,11 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
   scrollEnd = "bottom bottom-=40%",
   stagger = 0.03,
 }) => {
-  const containerRef = useRef<HTMLHeadingElement>(null);
+  const containerRef = useRef<HTMLSpanElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
 
-  const splitText = useMemo(() => {
-    const text = typeof children === "string" ? children : "";
-    return text.split("").map((char, index) => (
-      <span className="inline-block" key={index}>
-        {char === " " ? "\u00A0" : char}
-      </span>
-    ));
-  }, [children]);
+  // Process children to wrap characters in spans
+  const processedChildren = processChildren(children);
 
   useEffect(() => {
     if (!textRef.current) return;
@@ -47,7 +66,10 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
         ? scrollContainerRef.current
         : undefined;
 
-    const chars = textRef.current.querySelectorAll("span");
+    // Query all character spans
+    const chars = textRef.current.querySelectorAll(".char-animate");
+
+    if (chars.length === 0) return;
 
     gsap.fromTo(
       chars,
@@ -80,24 +102,13 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
     stagger,
   ]);
 
-  // If children is not a string, render it directly with animation on the container
-  if (typeof children !== "string") {
-    return (
-      <span ref={containerRef} className={containerClassName}>
-        <span ref={textRef} className={textClassName}>
-          {children}
-        </span>
-      </span>
-    );
-  }
-
   return (
     <span ref={containerRef} className={containerClassName}>
       <span
         ref={textRef}
         className={`inline-block overflow-hidden ${textClassName}`}
       >
-        {splitText}
+        {processedChildren}
       </span>
     </span>
   );
