@@ -73,18 +73,10 @@ export function Highlighter({
       annotationRef.current.show()
     }, delay)
 
-    const resizeObserver = new ResizeObserver(() => {
-      annotation.hide()
-      annotation.show()
-    })
-
-    resizeObserver.observe(element)
-    resizeObserver.observe(document.body)
-
     return () => {
-      if (element) {
-        annotate(element, { type: action }).remove()
-        resizeObserver.disconnect()
+      clearTimeout(timeoutId)
+      if (annotationRef.current) {
+        annotationRef.current.remove()
       }
     }
   }, [
