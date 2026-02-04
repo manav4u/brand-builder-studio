@@ -24,33 +24,43 @@ const ManifestoRow = ({
 
   const { scrollYProgress } = useScroll({
     target: rowRef,
-    offset: ["start 80%", "end 20%"],
+    offset: ["start 85%", "end 30%"],
   });
 
-  // Smooth, subtle entrance (no popping)
-  const opacity = useTransform(scrollYProgress, [0, 0.25], [0, 1]);
-  const y = useTransform(scrollYProgress, [0, 0.25], [12, 0]);
+  // Stronger but smooth scroll-based reveal
+  const opacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
+  const yHeadline = useTransform(scrollYProgress, [0, 0.15], [24, 0]);
+  const yBody = useTransform(scrollYProgress, [0, 0.15], [32, 0]);
 
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
   const imageSrc = isMobile ? mobileImage : desktopImage;
 
   const textContent = (
     <motion.div
-      className="flex flex-col justify-center px-6 md:px-16 py-2 md:py-0"
-      style={{ opacity, y }}
+      className="flex flex-col justify-start px-5 md:px-16 pt-2 md:pt-0"
+      style={{ opacity }}
     >
-      <h2 className="font-display font-bold uppercase text-foreground text-[2.2rem] md:text-[4.2rem] leading-[1.05] mb-3">
+      <motion.h2
+        className="font-display font-bold uppercase text-foreground text-[2.1rem] md:text-[4.2rem] leading-[1.05] mb-2"
+        style={{ y: yHeadline }}
+      >
         {headline}
-      </h2>
-      <p className="font-body text-muted-foreground text-base md:text-lg leading-snug max-w-xl">
+      </motion.h2>
+      <motion.p
+        className="font-body text-muted-foreground text-base md:text-lg leading-snug max-w-xl"
+        style={{ y: yBody }}
+      >
         {subtext}
-      </p>
+      </motion.p>
     </motion.div>
   );
 
   const imageContent = (
-    <div className="relative w-full h-[42vh] md:h-full overflow-hidden">
-      <motion.div className="absolute inset-0 w-full h-[108%]" style={{ y: imageY, opacity }}>
+    <div className="relative w-full h-[36vh] md:h-full overflow-hidden">
+      <motion.div
+        className="absolute inset-0 w-full h-[106%]"
+        style={{ y: imageY, opacity }}
+      >
         <img src={imageSrc} alt="" className="w-full h-full object-cover" />
         <div
           className="absolute inset-0 pointer-events-none"
@@ -65,7 +75,10 @@ const ManifestoRow = ({
   );
 
   return (
-    <div ref={rowRef} className="min-h-[85vh] grid grid-cols-1 md:grid-cols-2 bg-background snap-start">
+    <div
+      ref={rowRef}
+      className="min-h-[70vh] grid grid-cols-1 md:grid-cols-2 bg-background snap-start"
+    >
       {isMobile ? (
         <>
           {imageContent}
@@ -181,7 +194,7 @@ const ManifestoSection = () => {
         </div>
       </div>
 
-      {/* Manifesto Rows */}
+      {/* Manifesto */}
       <section className="bg-background snap-y snap-mandatory">
         {rows.map((row, i) => (
           <ManifestoRow key={i} index={i} {...row} />
