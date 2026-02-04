@@ -70,14 +70,23 @@ const ManifestoSection = () => {
       {/* Pinned Scroll Manifesto Section - 250vh for faster scroll */}
       <section
         ref={containerRef}
-        className="relative bg-background"
+        className="relative bg-background z-10"
         style={{ height: "250vh" }}
       >
         {/* Sticky Content Container - Locked to viewport, vertically centered */}
-        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-          <div className="container mx-auto px-4 md:px-8 lg:px-16">
-            {/* Stacked Text - Massive typography, left aligned */}
-            <div className="flex flex-col items-start gap-0" style={{ lineHeight: 1.0 }}>
+        <div 
+          className="sticky top-0 h-screen w-full overflow-hidden"
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <div className="w-full pl-[5%] pr-4 md:pl-[8%] md:pr-8">
+            {/* Stacked Text - Fluid typography, left aligned */}
+            <div 
+              className="flex flex-col items-start gap-0"
+              style={{ lineHeight: "0.9" }}
+            >
               {beats.map((beat, index) => (
                 <MaskRevealLine
                   key={index}
@@ -131,11 +140,13 @@ const MaskRevealLine = ({ text, colorClass, isRevealed, scrollProgress, revealAt
       <motion.h2
         className={`font-body font-black tracking-tight uppercase ${colorClass} origin-left`}
         style={{
-          fontSize: "clamp(2rem, 12vh, 10rem)",
+          fontSize: "min(10vw, 12vh)",
           y: isRevealed ? 0 : y,
           opacity: isActive ? 1 : 0.35,
           scale: isActive ? 1 : 0.97,
-          lineHeight: 1.0,
+          lineHeight: 0.95,
+          overflowWrap: "break-word",
+          hyphens: "manual",
           transition: "opacity 0.6s ease, scale 0.6s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
