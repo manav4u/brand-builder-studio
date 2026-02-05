@@ -1,6 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import Header from "@/components/Header";
 import ManifestoSection from "@/components/ManifestoSection";
+import VaultSection from "@/components/VaultSection";
 
 const Index = () => {
   return (
@@ -8,6 +9,7 @@ const Index = () => {
       <Header />
       <HeroSection />
       <ManifestoSection />
+      <VaultSection />
       
       {/* Placeholder for future sections */}
       <section className="min-h-screen flex items-center justify-center">

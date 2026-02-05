@@ -65,6 +65,7 @@ export default {
           light: "hsl(var(--aubergine-light))",
         },
         "plum-shadow": "hsl(var(--plum-shadow))",
+        "vault-bg": "hsl(var(--vault-bg))",
       },
       fontFamily: {
         display: ["Playfair Display", "Georgia", "serif"],

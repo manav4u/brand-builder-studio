@@ -54,6 +54,9 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 285 60% 94%;
     --sidebar-border: 285 30% 25%;
     --sidebar-ring: 45 100% 60%;
+
+    /* Vault Section */
+    --vault-bg: 285 65% 4%; /* #0F0512 */
   }
 
   .dark {
@@ -100,6 +103,9 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 285 60% 94%;
     --sidebar-border: 285 30% 25%;
     --sidebar-ring: 45 100% 60%;
+
+    /* Vault Section */
+    --vault-bg: 285 65% 4%; /* #0F0512 */
   }
 }
 
