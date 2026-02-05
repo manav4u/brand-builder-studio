@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
 interface Project {
   id: string;
@@ -127,18 +127,28 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
 };
 
 const VaultSection = () => {
+  const vaultRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: vaultRef,
+    offset: ["start end", "start start"],
+  });
+
+  // Flat at first; rounds only once the Vault starts overlapping the pinned last Manifesto row.
+  const topRadius = useTransform(scrollYProgress, [0.22, 0.38], ["0px", "80px"]);
+
   return (
-    <div className="relative z-20 -mt-24 md:-mt-32">
-      <section
-        className="py-16 md:py-24 px-5 md:px-16 rounded-t-[60px] md:rounded-t-[80px] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] min-h-screen"
-        style={{ backgroundColor: "#0a0512" }}
+    <div className="relative z-20 -mt-[65vh] md:-mt-[85vh]">
+      <motion.section
+        ref={vaultRef}
+        className="py-16 md:py-24 px-5 md:px-16 shadow-[0_-20px_50px_rgba(0,0,0,0.5)] min-h-screen bg-vault-bg"
+        style={{ borderTopLeftRadius: topRadius, borderTopRightRadius: topRadius }}
       >
         {/* Section Header */}
         <div className="max-w-7xl mx-auto mb-10 md:mb-14 pt-8">
-          <h2 className="font-display font-bold text-white text-3xl md:text-5xl uppercase tracking-wide">
+          <h2 className="font-display font-bold text-foreground text-3xl md:text-5xl uppercase tracking-wide">
             The Vault
           </h2>
-          <p className="text-gray-400 font-body mt-2 text-sm md:text-base">
+          <p className="text-muted-foreground font-body mt-2 text-sm md:text-base">
             Selected works & experiments
           </p>
         </div>
@@ -154,7 +164,7 @@ const VaultSection = () => {
             <VaultTile key={project.id} project={project} index={index} />
           ))}
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 };
