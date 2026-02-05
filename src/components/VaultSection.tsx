@@ -67,9 +67,9 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
         onMouseLeave={() => setIsHovered(false)}
         className="relative w-full h-full min-h-[280px] md:min-h-0 overflow-hidden rounded-lg cursor-pointer group"
         style={{
-          border: "1px solid rgba(255, 210, 51, 0.1)",
+          border: "1px solid hsl(var(--aubergine) / 0.85)",
           boxShadow: isHovered
-            ? "0 0 20px rgba(255, 210, 51, 0.4), 0 0 40px rgba(255, 210, 51, 0.2)"
+            ? "0 0 20px hsl(var(--gold) / 0.40), 0 0 40px hsl(var(--gold) / 0.20)"
             : "none",
           transition: "box-shadow 300ms ease-out",
         }}
@@ -78,7 +78,7 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
         <div
           className="absolute inset-0 transition-transform duration-300 ease-out"
           style={{
-            background: "linear-gradient(135deg, #1a0d20 0%, #0d0510 100%)",
+            background: "linear-gradient(135deg, hsl(var(--plum-shadow)) 0%, hsl(var(--vault-bg)) 100%)",
             transform: isHovered ? "scale(1.05)" : "scale(1)",
           }}
         />
@@ -89,7 +89,7 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
           style={{
             backdropFilter: isHovered ? "blur(4px)" : "blur(8px)",
             WebkitBackdropFilter: isHovered ? "blur(4px)" : "blur(8px)",
-            backgroundColor: "rgba(26, 13, 32, 0.3)",
+            backgroundColor: "hsl(var(--vault-bg) / 0.35)",
           }}
         />
 
@@ -97,7 +97,7 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-300"
           style={{
-            background: `radial-gradient(circle 200px at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 210, 51, 0.15), transparent)`,
+            background: `radial-gradient(circle 200px at ${mousePosition.x}px ${mousePosition.y}px, hsl(var(--gold) / 0.15), transparent)`,
             opacity: isHovered ? 1 : 0,
           }}
         />
@@ -106,17 +106,17 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
         <div className="relative z-10 h-full p-5 md:p-6 flex flex-col justify-between">
           {/* Category - Top Right */}
           <div className="flex justify-end">
-            <span className="text-xs text-gray-400 font-body tracking-wide">
+            <span className="text-xs text-muted-foreground font-body tracking-wide">
               {project.category}
             </span>
           </div>
 
           {/* Title & Serial - Bottom */}
           <div className="flex justify-between items-end">
-            <h3 className="font-body font-semibold text-white uppercase tracking-[0.1em] text-sm md:text-base">
+            <h3 className="font-body font-semibold text-foreground uppercase tracking-[0.1em] text-sm md:text-base">
               {project.title}
             </h3>
-            <span className="text-xs font-body text-[#FFD233]">
+            <span className="text-xs font-body text-gold">
               {project.id}
             </span>
           </div>
