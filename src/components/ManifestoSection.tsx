@@ -76,7 +76,7 @@ const ManifestoRow = ({
   return (
     <div
       ref={rowRef}
-      className="md:min-h-[70vh] grid grid-cols-1 md:grid-cols-2 bg-background md:snap-start gap-0"
+      className="py-12 md:py-0 md:min-h-[70vh] grid grid-cols-1 md:grid-cols-2 bg-background md:snap-start gap-6 md:gap-0"
     >
       {isMobile ? (
         <>
