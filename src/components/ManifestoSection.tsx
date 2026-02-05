@@ -194,14 +194,12 @@ const ManifestoSection = () => {
         </div>
       </div>
 
-      {/* Manifesto - Becomes sticky when vault approaches */}
-      <div className="sticky top-0 z-10">
-        <section className="bg-background snap-y snap-mandatory">
-          {rows.map((row, i) => (
-            <ManifestoRow key={i} index={i} {...row} />
-          ))}
-        </section>
-      </div>
+      {/* Manifesto rows - regular flow, no sticky here */}
+      <section className="bg-background">
+        {rows.map((row, i) => (
+          <ManifestoRow key={i} index={i} {...row} />
+        ))}
+      </section>
     </>
   );
 };
