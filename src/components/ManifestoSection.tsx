@@ -170,11 +170,10 @@ const ManifestoSection = () => {
   ];
 
   return (
-    // WRAPPER: This makes the content slide over the hero
-    <div className="relative z-20 -mt-20">
-      <div className="bg-background rounded-t-[60px] shadow-[0_-20px_50px_rgba(0,0,0,0.3)] min-h-screen">
+    <div className="relative z-20">
+      <div className="bg-background rounded-t-[60px] md:rounded-t-[80px] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] min-h-screen">
         {/* X-Strap Separator */}
-        <div className="relative h-20 md:h-24 overflow-hidden bg-background pt-16">
+        <div className="relative h-20 md:h-24 overflow-hidden bg-background pt-12">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow -rotate-[6deg]">
             <div className="flex items-center whitespace-nowrap animate-marquee-left">
               {[...Array(12)].map((_, i) => (
