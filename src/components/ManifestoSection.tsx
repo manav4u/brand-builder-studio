@@ -36,11 +36,11 @@ const ManifestoRow = ({
 
   const textContent = (
     <motion.div
-      className="flex flex-col justify-start px-5 md:px-16 pt-2 md:pt-0"
+      className="flex flex-col justify-center px-5 md:px-16"
       style={{ opacity }}
     >
       <motion.h2
-        className="font-display font-bold uppercase text-foreground text-[2.1rem] md:text-[4.2rem] leading-[1.05] mb-2"
+        className="font-display font-bold uppercase text-foreground text-[2.1rem] md:text-[4.2rem] leading-[1.05] mb-3 md:mb-4"
         style={{ y: yHeadline }}
       >
         {headline}
@@ -76,7 +76,7 @@ const ManifestoRow = ({
   return (
     <div
       ref={rowRef}
-      className="min-h-[70vh] grid grid-cols-1 md:grid-cols-2 bg-background snap-start"
+      className="min-h-[70vh] grid grid-cols-1 md:grid-cols-2 bg-background snap-start gap-4 md:gap-0"
     >
       {isMobile ? (
         <>
@@ -170,38 +170,36 @@ const ManifestoSection = () => {
   ];
 
   return (
-    <div className="relative z-20">
-      <div className="bg-background rounded-t-[60px] md:rounded-t-[80px] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] min-h-screen">
-        {/* X-Strap Separator */}
-        <div className="relative h-20 md:h-24 overflow-hidden bg-background pt-12">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow -rotate-[6deg]">
-            <div className="flex items-center whitespace-nowrap animate-marquee-left">
-              {[...Array(12)].map((_, i) => (
-                <span key={i} className="font-display italic text-sm md:text-base text-gold/80 mx-2">
-                  {strapText}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow rotate-[6deg]">
-            <div className="flex items-center whitespace-nowrap animate-marquee-right">
-              {[...Array(12)].map((_, i) => (
-                <span key={i} className="font-display italic text-sm md:text-base text-foreground/70 mx-2">
-                  {strapText}
-                </span>
-              ))}
-            </div>
+    <div className="sticky top-0 z-10">
+      {/* X-Strap Separator */}
+      <div className="relative h-20 md:h-24 overflow-hidden bg-background">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow -rotate-[6deg]">
+          <div className="flex items-center whitespace-nowrap animate-marquee-left">
+            {[...Array(12)].map((_, i) => (
+              <span key={i} className="font-display italic text-sm md:text-base text-gold/80 mx-2">
+                {strapText}
+              </span>
+            ))}
           </div>
         </div>
 
-        {/* Manifesto */}
-        <section className="bg-background snap-y snap-mandatory">
-          {rows.map((row, i) => (
-            <ManifestoRow key={i} index={i} {...row} />
-          ))}
-        </section>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow rotate-[6deg]">
+          <div className="flex items-center whitespace-nowrap animate-marquee-right">
+            {[...Array(12)].map((_, i) => (
+              <span key={i} className="font-display italic text-sm md:text-base text-foreground/70 mx-2">
+                {strapText}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
+
+      {/* Manifesto */}
+      <section className="bg-background snap-y snap-mandatory">
+        {rows.map((row, i) => (
+          <ManifestoRow key={i} index={i} {...row} />
+        ))}
+      </section>
     </div>
   );
 };
