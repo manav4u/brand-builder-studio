@@ -27,7 +27,6 @@ const ManifestoRow = ({
     offset: ["start 85%", "end 30%"],
   });
 
-  // Stronger but smooth scroll-based reveal
   const opacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
   const yHeadline = useTransform(scrollYProgress, [0, 0.15], [24, 0]);
   const yBody = useTransform(scrollYProgress, [0, 0.15], [32, 0]);
@@ -171,37 +170,40 @@ const ManifestoSection = () => {
   ];
 
   return (
-    <>
-      {/* X-Strap Separator */}
-      <div className="relative h-20 md:h-24 overflow-hidden bg-background">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow -rotate-[6deg]">
-          <div className="flex items-center whitespace-nowrap animate-marquee-left">
-            {[...Array(12)].map((_, i) => (
-              <span key={i} className="font-display italic text-sm md:text-base text-gold/80 mx-2">
-                {strapText}
-              </span>
-            ))}
+    // WRAPPER: This makes the content slide over the hero
+    <div className="relative z-20 -mt-20">
+      <div className="bg-background rounded-t-[60px] shadow-[0_-20px_50px_rgba(0,0,0,0.3)] min-h-screen">
+        {/* X-Strap Separator */}
+        <div className="relative h-20 md:h-24 overflow-hidden bg-background pt-16">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow -rotate-[6deg]">
+            <div className="flex items-center whitespace-nowrap animate-marquee-left">
+              {[...Array(12)].map((_, i) => (
+                <span key={i} className="font-display italic text-sm md:text-base text-gold/80 mx-2">
+                  {strapText}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow rotate-[6deg]">
+            <div className="flex items-center whitespace-nowrap animate-marquee-right">
+              {[...Array(12)].map((_, i) => (
+                <span key={i} className="font-display italic text-sm md:text-base text-foreground/70 mx-2">
+                  {strapText}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow rotate-[6deg]">
-          <div className="flex items-center whitespace-nowrap animate-marquee-right">
-            {[...Array(12)].map((_, i) => (
-              <span key={i} className="font-display italic text-sm md:text-base text-foreground/70 mx-2">
-                {strapText}
-              </span>
-            ))}
-          </div>
-        </div>
+        {/* Manifesto */}
+        <section className="bg-background snap-y snap-mandatory">
+          {rows.map((row, i) => (
+            <ManifestoRow key={i} index={i} {...row} />
+          ))}
+        </section>
       </div>
-
-      {/* Manifesto */}
-      <section className="bg-background snap-y snap-mandatory">
-        {rows.map((row, i) => (
-          <ManifestoRow key={i} index={i} {...row} />
-        ))}
-      </section>
-    </>
+    </div>
   );
 };
 
