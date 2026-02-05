@@ -76,7 +76,7 @@ const ManifestoRow = ({
   return (
     <div
       ref={rowRef}
-      className="min-h-[70vh] grid grid-cols-1 md:grid-cols-2 bg-background snap-start gap-4 md:gap-0"
+      className="min-h-[70vh] grid grid-cols-1 md:grid-cols-2 bg-background md:snap-start gap-4 md:gap-0"
     >
       {isMobile ? (
         <>
@@ -194,14 +194,17 @@ const ManifestoSection = () => {
         </div>
       </div>
 
-      {/* Manifesto rows - sticky so Vault scrolls over it */}
-      <div className="sticky top-0 z-10">
-        <section className="bg-background">
-          {rows.map((row, i) => (
-            <ManifestoRow key={i} index={i} {...row} />
-          ))}
-        </section>
-      </div>
+      {/* Manifesto rows - scroll normally; only the LAST row pins for the Vault handoff */}
+      <section className="bg-background md:snap-y md:snap-mandatory">
+        {rows.map((row, i) => {
+          const isLast = i === rows.length - 1;
+          return (
+            <div key={i} className={isLast ? "sticky top-0 z-10 bg-background" : undefined}>
+              <ManifestoRow index={i} {...row} />
+            </div>
+          );
+        })}
+      </section>
     </>
   );
 };

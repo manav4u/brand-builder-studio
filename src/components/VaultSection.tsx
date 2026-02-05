@@ -128,7 +128,7 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
 
 const VaultSection = () => {
   return (
-    <div className="relative z-20">
+    <div className="relative z-20 -mt-24 md:-mt-32">
       <section
         className="py-16 md:py-24 px-5 md:px-16 rounded-t-[60px] md:rounded-t-[80px] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] min-h-screen"
         style={{ backgroundColor: "#0a0512" }}
