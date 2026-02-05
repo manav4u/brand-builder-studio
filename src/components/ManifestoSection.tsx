@@ -107,7 +107,7 @@ const ManifestoSection = () => {
       headline: (
         <>
           THE INTERNET IS{" "}
-          <Highlighter action="highlight" color="#3E1A47" strokeWidth={2} animationDuration={200} isView>
+          <Highlighter isView>
             DEAF.
           </Highlighter>
         </>
@@ -115,7 +115,7 @@ const ManifestoSection = () => {
       subtext: (
         <>
           In an ocean of infinite noise,{" "}
-          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={200} isView>
+          <Highlighter isView delay={200}>
             visibility is a myth.
           </Highlighter>{" "}
           You are shouting into a void that does not care.
@@ -128,7 +128,7 @@ const ManifestoSection = () => {
     {
       headline: (
         <>
-          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={200} isView>
+          <Highlighter isView>
             CLARITY
           </Highlighter>{" "}
           IS THE ONLY LANGUAGE.
@@ -137,7 +137,7 @@ const ManifestoSection = () => {
       subtext: (
         <>
           I cut through the chaos. I shape your signal until it stands alone, turning confusion into an{" "}
-          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={200} isView>
+          <Highlighter isView delay={200}>
             undeniable force.
           </Highlighter>
         </>
@@ -150,15 +150,28 @@ const ManifestoSection = () => {
       headline: (
         <>
           I ENGINEER{" "}
-          <span className="text-[#FFD233] italic font-serif">
-            OBSESSION.
+          <span className="relative inline-block">
+            <span className="font-display font-bold text-foreground">O</span>
+            <span 
+              className="font-signature text-primary absolute"
+              style={{
+                transform: "rotate(-5deg)",
+                left: "0.5em",
+                top: "-0.1em",
+                fontSize: "1.1em",
+              }}
+            >
+              bsession.
+            </span>
+            {/* Invisible text for spacing */}
+            <span className="invisible">BSESSION.</span>
           </span>
         </>
       ),
       subtext: (
         <>
           I don't just build websites. I build{" "}
-          <Highlighter action="underline" color="#FFD233" strokeWidth={3} animationDuration={200} isView>
+          <Highlighter isView delay={200}>
             domains of influence.
           </Highlighter>{" "}
           that demand attention and command the room.
