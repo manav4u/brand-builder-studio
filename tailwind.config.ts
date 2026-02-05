@@ -68,8 +68,9 @@ export default {
         "vault-bg": "hsl(var(--vault-bg))",
       },
       fontFamily: {
-        display: ["Playfair Display", "Georgia", "serif"],
+        display: ["Cormorant Garamond", "Georgia", "serif"],
         body: ["Inter", "system-ui", "sans-serif"],
+        signature: ["Brittany Signature", "cursive"],
       },
       borderRadius: {
         lg: "var(--radius)",
