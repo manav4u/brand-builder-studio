@@ -170,7 +170,7 @@ const ManifestoSection = () => {
   ];
 
   return (
-    <div className="sticky top-0 z-10">
+    <>
       {/* X-Strap Separator */}
       <div className="relative h-20 md:h-24 overflow-hidden bg-background">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-9 md:h-10 bg-plum-shadow -rotate-[6deg]">
@@ -194,13 +194,15 @@ const ManifestoSection = () => {
         </div>
       </div>
 
-      {/* Manifesto */}
-      <section className="bg-background snap-y snap-mandatory">
-        {rows.map((row, i) => (
-          <ManifestoRow key={i} index={i} {...row} />
-        ))}
-      </section>
-    </div>
+      {/* Manifesto - Becomes sticky when vault approaches */}
+      <div className="sticky top-0 z-10">
+        <section className="bg-background snap-y snap-mandatory">
+          {rows.map((row, i) => (
+            <ManifestoRow key={i} index={i} {...row} />
+          ))}
+        </section>
+      </div>
+    </>
   );
 };
 
