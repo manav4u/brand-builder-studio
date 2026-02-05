@@ -194,13 +194,23 @@ const ManifestoSection = () => {
         </div>
       </div>
 
-      {/* Manifesto rows - scroll normally; only the LAST row pins for the Vault handoff */}
+      {/* Manifesto rows - scroll normally; last row pins with extra runway so Vault can slide over */}
       <section className="bg-background md:snap-y md:snap-mandatory">
         {rows.map((row, i) => {
           const isLast = i === rows.length - 1;
+
+          if (!isLast) {
+            return <ManifestoRow key={i} index={i} {...row} />;
+          }
+
           return (
-            <div key={i} className={isLast ? "sticky top-0 z-10 bg-background" : undefined}>
-              <ManifestoRow index={i} {...row} />
+            <div key={i} className="relative">
+              <div className="sticky top-0 z-10 bg-background">
+                <ManifestoRow index={i} {...row} />
+              </div>
+
+              {/* Scroll runway: keeps the last row pinned while Vault rises over it */}
+              <div aria-hidden className="h-[65vh] md:h-[85vh]" />
             </div>
           );
         })}
