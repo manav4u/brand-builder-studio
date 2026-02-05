@@ -116,11 +116,8 @@
              <h3 className="font-body font-semibold text-foreground uppercase tracking-[0.1em] text-sm md:text-base">
                {project.title}
              </h3>
-              <span 
-                className="font-signature text-primary text-lg md:text-xl"
-                style={{ transform: "rotate(-5deg)" }}
-              >
-                No. {project.id}
+             <span className="text-xs font-body text-primary">
+               {project.id}
              </span>
            </div>
          </div>
