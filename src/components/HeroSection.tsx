@@ -9,7 +9,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="sticky top-0 h-screen w-full overflow-hidden bg-background z-10">
+    <section className="relative h-screen w-full overflow-hidden bg-background">
       {/* Mobile Background - centered figure */}
       <div 
         className="absolute inset-0 animate-scale-in md:hidden"
