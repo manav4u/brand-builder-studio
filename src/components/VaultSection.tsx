@@ -67,7 +67,7 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
         onMouseLeave={() => setIsHovered(false)}
         className="relative w-full h-full min-h-[280px] md:min-h-0 overflow-hidden rounded-lg cursor-pointer group"
         style={{
-          border: "1px solid hsl(var(--background))",
+          border: "1px solid rgba(255, 210, 51, 0.1)",
           boxShadow: isHovered
             ? "0 0 20px rgba(255, 210, 51, 0.4), 0 0 40px rgba(255, 210, 51, 0.2)"
             : "none",
@@ -78,7 +78,7 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
         <div
           className="absolute inset-0 transition-transform duration-300 ease-out"
           style={{
-            background: "linear-gradient(135deg, hsl(285 45% 8%) 0%, hsl(285 55% 5%) 100%)",
+            background: "linear-gradient(135deg, #1a0d20 0%, #0d0510 100%)",
             transform: isHovered ? "scale(1.05)" : "scale(1)",
           }}
         />
@@ -89,7 +89,7 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
           style={{
             backdropFilter: isHovered ? "blur(4px)" : "blur(8px)",
             WebkitBackdropFilter: isHovered ? "blur(4px)" : "blur(8px)",
-            backgroundColor: "hsla(285, 55%, 9%, 0.3)",
+            backgroundColor: "rgba(26, 13, 32, 0.3)",
           }}
         />
 
@@ -106,17 +106,17 @@ const VaultTile = ({ project, index }: VaultTileProps) => {
         <div className="relative z-10 h-full p-5 md:p-6 flex flex-col justify-between">
           {/* Category - Top Right */}
           <div className="flex justify-end">
-            <span className="text-xs text-muted-foreground font-body tracking-wide">
+            <span className="text-xs text-gray-400 font-body tracking-wide">
               {project.category}
             </span>
           </div>
 
           {/* Title & Serial - Bottom */}
           <div className="flex justify-between items-end">
-            <h3 className="font-body font-semibold text-foreground uppercase tracking-[0.1em] text-sm md:text-base">
+            <h3 className="font-body font-semibold text-white uppercase tracking-[0.1em] text-sm md:text-base">
               {project.title}
             </h3>
-            <span className="text-xs font-body text-primary">
+            <span className="text-xs font-body text-[#FFD233]">
               {project.id}
             </span>
           </div>
@@ -131,14 +131,14 @@ const VaultSection = () => {
     <div className="relative z-20">
       <section
         className="py-16 md:py-24 px-5 md:px-16 rounded-t-[60px] md:rounded-t-[80px] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] min-h-screen"
-        style={{ backgroundColor: "hsl(var(--vault-bg))" }}
+        style={{ backgroundColor: "#0a0512" }}
       >
         {/* Section Header */}
         <div className="max-w-7xl mx-auto mb-10 md:mb-14 pt-8">
-          <h2 className="font-display font-bold text-foreground text-3xl md:text-5xl uppercase tracking-wide">
+          <h2 className="font-display font-bold text-white text-3xl md:text-5xl uppercase tracking-wide">
             The Vault
           </h2>
-          <p className="text-muted-foreground font-body mt-2 text-sm md:text-base">
+          <p className="text-gray-400 font-body mt-2 text-sm md:text-base">
             Selected works & experiments
           </p>
         </div>
