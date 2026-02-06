@@ -1,142 +1,192 @@
 
-# The Vault - Portfolio Section
+
+# The Architect Section - Implementation Plan
 
 ## Overview
-Build a premium "Vault" portfolio section with an asymmetrical Bento grid layout, frosted-glass tiles, mouse-follow glow effects, and staggered scroll-reveal animations.
+A new section between Manifesto and Vault that introduces "who is this guy" - the person behind the brand. This section uses the same scroll-over animation established between Manifesto and Vault, maintaining visual continuity while shifting focus from manifesto to personal introduction.
 
 ---
 
 ## Visual Architecture
 
 ```text
-DESKTOP (4-Column Bento Grid)
-┌─────────────────┬─────────────┐
-│                 │             │
-│   PROJECT 1     │  PROJECT 2  │
-│   (2x2 span)    │  (2x1 span) │
-│                 ├──────┬──────┤
-│                 │  P3  │  P4  │
-└─────────────────┴──────┴──────┘
-
-MOBILE (Single Column Stack)
-┌─────────────────┐
-│   PROJECT 1     │
-│   (square)      │
-├─────────────────┤
-│   PROJECT 2     │
-├─────────────────┤
-│   PROJECT 3     │
-├─────────────────┤
-│   PROJECT 4     │
-└─────────────────┘
+SECTION FLOW (Scroll Direction: Down)
+┌────────────────────────────────────┐
+│          MANIFESTO ROW 3           │  <- Pins to viewport
+│           (Sticky)                 │
+├────────────────────────────────────┤
+│      ↓ ARCHITECT slides over ↓     │  <- No rounded corners
+├────────────────────────────────────┤
+│   "WHO AM I?" Marquee Strip        │  <- Scroll velocity marquee
+│   (I in gold italic)               │
+├────────────────────────────────────┤
+│                                    │
+│     ARCHITECT IMAGE                │
+│     (Full-width, cinematic)        │
+│                                    │
+│   ┌──────────────────────────┐     │
+│   │ Dark gradient overlay    │     │
+│   │ "I'm Manav" (headline)   │     │
+│   │ Student | 20 | Pune      │     │
+│   └──────────────────────────┘     │
+│                                    │
+├────────────────────────────────────┤
+│   More details section             │  <- Future expansion
+│   (placeholder for now)            │
+└────────────────────────────────────┘
+        ↓ VAULT slides over ↓         <- Rounded corners (existing)
 ```
 
 ---
 
-## Files to Create/Modify
+## Files to Modify
 
-### 1. Create `src/components/VaultSection.tsx`
+### 1. Create `src/components/ArchitectSection.tsx`
 
 **Component Structure:**
-- `VaultSection` - Main container with darker background (`#0F0512`)
-- `VaultTile` - Individual project card with all interactive effects
+- Main container with `vault-bg` background (same dark depth as Vault)
+- NO rounded corners (unlike Vault) - sharp edges for architectural feel
+- Negative top margin to scroll over pinned Manifesto row
+- Shadow on top edge for depth perception
 
-**Data Structure:**
-```text
-projects = [
-  { id: "001", title: "PROJECT NAME", category: "Web Architecture", span: "large" },
-  { id: "002", title: "PROJECT NAME", category: "Brand Identity", span: "wide" },
-  { id: "003", title: "PROJECT NAME", category: "Digital Product", span: "small" },
-  { id: "004", title: "PROJECT NAME", category: "Experience Design", span: "small" }
-]
-```
+**Marquee Strip ("WHO AM I?"):**
+- Rectangular box with `plum-shadow` background
+- Uses existing `animate-marquee-left` animation
+- Text: "WHO AM " + "I" (gold italic, using font-display) + "?" repeated
+- Full-width, approximately h-12 to h-14
 
-**Tile Features:**
-- Frosted glass effect using `backdrop-blur-md` over dark placeholder
-- 1px border with `#1E0B24` color
-- Gold glow on hover (`box-shadow` with `#FFD233`)
-- Image scale-up on hover (`scale-105`) with reduced blur
-- Mouse-follow radial gradient glow (tracked via `onMouseMove`)
+**Architect Image Block:**
+- Full-width container with aspect ratio ~16:9 or auto height
+- Uses `public/architect.webp` as source
+- Dark gradient overlay from bottom (60-70% coverage)
+- Overlay contains:
+  - Headline: "I'm Manav" - large, bold, font-display
+  - Subheadline: "Student | 20 | Pune, India" - smaller, muted, font-body
 
-**Typography:**
-- Title: Bottom-left, Inter font, uppercase, `tracking-[0.1em]`
-- Category: Top-right, small muted text
-- Serial Number: Bottom-right, gold color, small font
+**Details Placeholder:**
+- Simple container for future content
+- Minimal height for now
 
 ---
 
-### 2. Update `src/index.css`
+### 2. Modify `src/components/ManifestoSection.tsx`
 
-Add new CSS variable for the darker vault background:
-```text
---vault-bg: 285 65% 4%; /* #0F0512 */
-```
+**Changes Required:**
+- The last row currently pins for the Vault transition
+- Need to maintain this sticky behavior for the new Architect section
+- The runway height stays the same (`h-[65vh] md:h-[85vh]`)
+- Architect will use this runway to slide over
 
 ---
 
-### 3. Update `src/pages/Index.tsx`
+### 3. Create `src/components/ArchitectSection.tsx` with Vault Transition
 
-Import and add `VaultSection` component after `ManifestoSection`.
+**Scroll-Over Logic:**
+- Uses same negative margin approach as current Vault: `-mt-[65vh] md:-mt-[85vh]`
+- z-index: 20 (same layer as Vault for proper stacking)
+- Top shadow: `shadow-[0_-20px_50px_rgba(0,0,0,0.5)]`
+- NO border-radius animation (stays sharp/square)
+
+**Internal Runway for Vault:**
+- At the bottom of Architect section, add a sticky wrapper for content
+- Add scroll runway (`h-[65vh] md:h-[85vh]`) so Vault can slide over Architect
+
+---
+
+### 4. Modify `src/components/VaultSection.tsx`
+
+**Changes Required:**
+- Remove connection to Manifesto (Architect now handles the transition)
+- Keep the rounded corner animation for sliding over Architect
+- Adjust `useScroll` target/offset if needed for smooth transition timing
+
+---
+
+### 5. Update `src/pages/Index.tsx`
+
+**New Section Order:**
+```text
+Header
+HeroSection
+ManifestoSection
+ArchitectSection  <- NEW
+VaultSection
+(Future sections)
+```
 
 ---
 
 ## Technical Implementation Details
 
-### Bento Grid Layout (Desktop)
+### Marquee Animation
+The existing `animate-marquee-left` keyframe in `tailwind.config.ts` works perfectly:
 ```text
-grid-template-columns: repeat(4, 1fr)
-grid-template-rows: repeat(2, minmax(300px, 1fr))
-
-Project 1: grid-column: span 2, grid-row: span 2
-Project 2: grid-column: span 2, grid-row: span 1
-Project 3: grid-column: span 1, grid-row: span 1
-Project 4: grid-column: span 1, grid-row: span 1
+"marquee-left": {
+  "0%": { transform: "translateX(0%)" },
+  "100%": { transform: "translateX(-50%)" }
+}
 ```
 
-### Mouse-Follow Glow Effect
-- Track mouse position within tile using `onMouseMove`
-- Store position in local state `{ x, y }`
-- Apply radial gradient at cursor position:
-  ```text
-  background: radial-gradient(
-    circle 200px at ${x}px ${y}px,
-    rgba(255, 210, 51, 0.15),
-    transparent
-  )
-  ```
-- Only visible on hover (opacity transition)
+Text structure for "WHO AM I?":
+- "WHO AM " (lavender/foreground)
+- "I" (gold, italic, font-display)
+- "?" (lavender/foreground)
+- Repeated 12+ times for seamless loop
 
-### Hover State Transitions
-- Border glow: `box-shadow: 0 0 20px rgba(255, 210, 51, 0.4)`
-- Image scale: `transform: scale(1.05)`
-- Blur reduction: `backdrop-blur-sm` (from `backdrop-blur-md`)
-- Transition duration: `300ms ease-out`
+### Overlay Gradient
+```text
+background: linear-gradient(
+  to top,
+  hsl(var(--vault-bg)) 0%,
+  hsl(var(--vault-bg) / 0.8) 40%,
+  transparent 100%
+)
+```
 
-### Scroll Animation (Framer Motion)
-- Use `useInView` hook to trigger entrance
-- Staggered delay: Each tile gets `index * 0.15s` delay
-- Animation: Float up from bottom (`y: 50 -> 0`, `opacity: 0 -> 1`)
-- Duration: `0.6s` with `easeOut`
+### Typography Hierarchy
+- Headline "I'm Manav": `font-display font-bold text-4xl md:text-6xl text-foreground`
+- Subheadline: `font-body text-lg md:text-xl text-muted-foreground tracking-wide`
+- Separator: Use " | " with slight letter-spacing
 
-### Mobile Responsiveness
-- Switch to single column: `grid-cols-1`
-- All tiles become square: `aspect-square`
-- Maintain all hover effects for touch devices
-- Reduce padding for compact view
+### Z-Index Stack
+```text
+z-10: Pinned Manifesto row
+z-20: Architect section (overlays Manifesto)
+z-20: Vault section (overlays Architect)
+```
 
 ---
 
-## Placeholder Content
-Since no actual project images are provided yet, tiles will use:
-- Dark gradient placeholder backgrounds
-- Category tags as specified
-- Sequential numbering (001-004)
+## Color Palette Usage
+
+| Element | Color Token | Hex Value |
+|---------|-------------|-----------|
+| Section Background | `--vault-bg` | #0F0512 |
+| Marquee Strip BG | `--plum-shadow` | #3E1A47 |
+| "I" in Marquee | `--gold` | #FFD233 |
+| Headline Text | `--foreground` (lavender) | #F5E6FA |
+| Subheadline | `--muted-foreground` | ~65% lavender |
+| Overlay Gradient | `--vault-bg` with alpha | #0F0512 |
 
 ---
 
-## Brand Consistency
-- Background: `#0F0512` (darker than manifesto for depth)
-- Border: `#1E0B24` (aubergine)
-- Glow accent: `#FFD233` (luminous gold)
-- Text: Lavender Mist for titles, muted for categories
-- Fonts: Inter (body) for all tile typography
+## Mobile Responsiveness
+
+- Marquee strip: Same animation, slightly smaller height (`h-10` vs `h-14`)
+- Image: Full width, auto height, maintains aspect ratio
+- Text overlay: Adjusted padding (`px-5` vs `px-16`)
+- Font sizes: Reduced for mobile (`text-3xl` vs `text-6xl` for headline)
+
+---
+
+## Scroll Behavior Summary
+
+1. User scrolls through Manifesto rows 1 & 2 normally
+2. Row 3 reaches top and **pins** (sticky behavior)
+3. **Architect section** rises from below, covering row 3
+4. Architect marquee and image come into view
+5. User scrolls through Architect content
+6. Architect content pins (sticky at bottom)
+7. **Vault section** rises with rounded corners, covering Architect
+8. Scroll continues into Vault grid
+
