@@ -1,192 +1,213 @@
 
 
-# The Architect Section - Implementation Plan
+# Animation Enhancement & Typography Refinement Plan
 
 ## Overview
-A new section between Manifesto and Vault that introduces "who is this guy" - the person behind the brand. This section uses the same scroll-over animation established between Manifesto and Vault, maintaining visual continuity while shifting focus from manifesto to personal introduction.
+Elevating the Manifesto and Architect sections with world-class animations, refined typography using Inter + Helvetica + Apple Garamond, slower marquee effects, adjusted overlay gradients, and increased headline sizing - all while maintaining harmony with existing Highlighter animations.
 
 ---
 
-## Visual Architecture
+## Changes Summary
+
+### 1. Typography System Update
+
+**Files:** `index.html`, `tailwind.config.ts`
+
+**New Font Stack:**
+- **Display (Headlines):** Apple Garamond → Playfair Display fallback
+- **Body (Text):** Inter → Helvetica Neue → system-ui
 
 ```text
-SECTION FLOW (Scroll Direction: Down)
-┌────────────────────────────────────┐
-│          MANIFESTO ROW 3           │  <- Pins to viewport
-│           (Sticky)                 │
-├────────────────────────────────────┤
-│      ↓ ARCHITECT slides over ↓     │  <- No rounded corners
-├────────────────────────────────────┤
-│   "WHO AM I?" Marquee Strip        │  <- Scroll velocity marquee
-│   (I in gold italic)               │
-├────────────────────────────────────┤
-│                                    │
-│     ARCHITECT IMAGE                │
-│     (Full-width, cinematic)        │
-│                                    │
-│   ┌──────────────────────────┐     │
-│   │ Dark gradient overlay    │     │
-│   │ "I'm Manav" (headline)   │     │
-│   │ Student | 20 | Pune      │     │
-│   └──────────────────────────┘     │
-│                                    │
-├────────────────────────────────────┤
-│   More details section             │  <- Future expansion
-│   (placeholder for now)            │
-└────────────────────────────────────┘
-        ↓ VAULT slides over ↓         <- Rounded corners (existing)
+Google Fonts Update:
+- Add: EB Garamond (closest to Apple Garamond available on Google Fonts)
+- Keep: Inter, Playfair Display
+
+Font Family Config:
+- font-display: ["EB Garamond", "Playfair Display", "Georgia", "serif"]
+- font-body: ["Inter", "Helvetica Neue", "Helvetica", "system-ui", "sans-serif"]
+```
+
+---
+
+### 2. Marquee Speed Reduction
+
+**File:** `tailwind.config.ts`
+
+Current speed: `15s` (too fast)
+New speed: `30s` (slower, more elegant)
+
+```text
+Keyframe Updates:
+- animate-marquee-left: 15s → 30s
+- animate-marquee-right: 15s → 30s
+```
+
+This affects:
+- X-Strap separator in ManifestoSection
+- "WHO AM I?" marquee in ArchitectSection
+
+---
+
+### 3. Architect Section Enhancements
+
+**File:** `src/components/ArchitectSection.tsx`
+
+**Overlay Gradient Reduction (60-70% → 50-60%):**
+```text
+Current:
+  hsl(var(--vault-bg)) 0%,
+  hsl(var(--vault-bg) / 0.85) 25%,
+  hsl(var(--vault-bg) / 0.4) 50%,
+  transparent 100%
+
+New:
+  hsl(var(--vault-bg)) 0%,
+  hsl(var(--vault-bg) / 0.7) 20%,
+  hsl(var(--vault-bg) / 0.3) 45%,
+  transparent 85%
+```
+
+**Headline Size Increase:**
+```text
+Current: text-4xl md:text-6xl lg:text-7xl
+New: text-5xl md:text-7xl lg:text-8xl xl:text-9xl
+```
+
+**World-Class Animations:**
+
+Image Animation:
+- Scale reveal from 1.1 to 1.0 with opacity fade
+- Subtle parallax maintained
+- Smooth cubic-bezier easing
+
+Text Animations (staggered):
+- Headline: Fade up + slight blur clear effect
+- Subheadline: Delayed fade up with tracking animation
+- Character-by-character reveal for "Manav" using Framer Motion
+
+```text
+Animation Sequence (on scroll into view):
+1. 0ms - Image scales in with opacity (1s duration)
+2. 400ms - "I'm" fades up smoothly
+3. 600ms - "Manav" reveals with gold glow pulse
+4. 800ms - Subheadline fades up with subtle tracking expand
+```
+
+---
+
+### 4. Manifesto Section Animation Enhancements
+
+**File:** `src/components/ManifestoSection.tsx`
+
+**Image Animations (coordinated with text, not conflicting with Highlighter):**
+
+Current: Simple opacity + parallax
+Enhanced:
+- Scale from 1.05 → 1.0 during scroll reveal
+- Mask reveal effect (image unveils from edge)
+- Smooth parallax maintained
+
+**Text Animations (compatible with Highlighter):**
+
+The Highlighter already handles underline/highlight animations on specific words. We need to animate the TEXT CONTAINER, not individual words, so there's no conflict.
+
+```text
+Animation Strategy:
+- Container-level animations (opacity, y-translate)
+- Highlighter handles word-level decorations
+- No interference between the two
+
+Enhanced Text Animation:
+- Headline: Fade up with slight overshoot easing
+- Subtext: Staggered fade up (200ms delay after headline)
+- Smooth cubic-bezier curve for premium feel
+```
+
+**Keyframe Updates for Premium Motion:**
+
+```text
+New Easing Curves:
+- "ease-out-expo": cubic-bezier(0.16, 1, 0.3, 1)
+- "ease-out-quart": cubic-bezier(0.25, 1, 0.5, 1)
+
+New Keyframes:
+- "reveal-up": translateY(40px) + opacity(0) → translateY(0) + opacity(1)
+- "scale-reveal": scale(1.08) + opacity(0) → scale(1) + opacity(1)
+- "blur-in": blur(8px) + opacity(0) → blur(0) + opacity(1)
+```
+
+---
+
+### 5. Framer Motion Integration
+
+Both sections already import Framer Motion. We'll enhance the motion values:
+
+**ManifestoRow Enhanced Transforms:**
+```text
+Current:
+- opacity: [0, 0.15] → [0, 1]
+- yHeadline: [0, 0.15] → [24, 0]
+- yBody: [0, 0.15] → [32, 0]
+
+Enhanced:
+- opacity: smoother curve with [0, 0.2] → [0, 1]
+- yHeadline: [0, 0.2] → [50, 0] (more dramatic)
+- yBody: [0.05, 0.25] → [60, 0] (staggered start)
+- imageScale: [0, 0.3] → [1.08, 1] (scale reveal)
+- imageOpacity: [0, 0.25] → [0, 1]
+```
+
+**ArchitectSection Enhanced Animations:**
+```text
+Image Block:
+- initial: { scale: 1.15, opacity: 0 }
+- animate: { scale: 1, opacity: 1 }
+- transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
+
+Headline "I'm Manav":
+- initial: { opacity: 0, y: 60, filter: "blur(10px)" }
+- animate: { opacity: 1, y: 0, filter: "blur(0px)" }
+- transition: { duration: 0.8, delay: 0.3, ease: "easeOut" }
+
+"Manav" Gold Text:
+- Additional subtle glow pulse on reveal
+
+Subheadline:
+- initial: { opacity: 0, y: 40, letterSpacing: "0.05em" }
+- animate: { opacity: 1, y: 0, letterSpacing: "0.1em" }
+- transition: { duration: 0.7, delay: 0.5, ease: "easeOut" }
 ```
 
 ---
 
 ## Files to Modify
 
-### 1. Create `src/components/ArchitectSection.tsx`
-
-**Component Structure:**
-- Main container with `vault-bg` background (same dark depth as Vault)
-- NO rounded corners (unlike Vault) - sharp edges for architectural feel
-- Negative top margin to scroll over pinned Manifesto row
-- Shadow on top edge for depth perception
-
-**Marquee Strip ("WHO AM I?"):**
-- Rectangular box with `plum-shadow` background
-- Uses existing `animate-marquee-left` animation
-- Text: "WHO AM " + "I" (gold italic, using font-display) + "?" repeated
-- Full-width, approximately h-12 to h-14
-
-**Architect Image Block:**
-- Full-width container with aspect ratio ~16:9 or auto height
-- Uses `public/architect.webp` as source
-- Dark gradient overlay from bottom (60-70% coverage)
-- Overlay contains:
-  - Headline: "I'm Manav" - large, bold, font-display
-  - Subheadline: "Student | 20 | Pune, India" - smaller, muted, font-body
-
-**Details Placeholder:**
-- Simple container for future content
-- Minimal height for now
+| File | Changes |
+|------|---------|
+| `index.html` | Add EB Garamond font import |
+| `tailwind.config.ts` | Update font families, slow marquee, add new keyframes/easings |
+| `src/components/ArchitectSection.tsx` | Reduce overlay, increase headline, add premium animations |
+| `src/components/ManifestoSection.tsx` | Add image scale reveal, enhance text motion curves |
 
 ---
 
-### 2. Modify `src/components/ManifestoSection.tsx`
+## Animation Philosophy
 
-**Changes Required:**
-- The last row currently pins for the Vault transition
-- Need to maintain this sticky behavior for the new Architect section
-- The runway height stays the same (`h-[65vh] md:h-[85vh]`)
-- Architect will use this runway to slide over
+The animations follow these principles to match the brand identity:
 
----
-
-### 3. Create `src/components/ArchitectSection.tsx` with Vault Transition
-
-**Scroll-Over Logic:**
-- Uses same negative margin approach as current Vault: `-mt-[65vh] md:-mt-[85vh]`
-- z-index: 20 (same layer as Vault for proper stacking)
-- Top shadow: `shadow-[0_-20px_50px_rgba(0,0,0,0.5)]`
-- NO border-radius animation (stays sharp/square)
-
-**Internal Runway for Vault:**
-- At the bottom of Architect section, add a sticky wrapper for content
-- Add scroll runway (`h-[65vh] md:h-[85vh]`) so Vault can slide over Architect
+1. **Deliberate Pacing** - Slower, more intentional reveals that demand attention
+2. **Layered Motion** - Image first, then headline, then body text
+3. **Smooth Easing** - Exponential ease-out for luxury feel
+4. **Subtle Scale** - Micro-animations that add depth without distraction
+5. **Scroll-Linked** - All reveals tied to scroll position for control
 
 ---
 
-### 4. Modify `src/components/VaultSection.tsx`
+## Technical Notes
 
-**Changes Required:**
-- Remove connection to Manifesto (Architect now handles the transition)
-- Keep the rounded corner animation for sliding over Architect
-- Adjust `useScroll` target/offset if needed for smooth transition timing
-
----
-
-### 5. Update `src/pages/Index.tsx`
-
-**New Section Order:**
-```text
-Header
-HeroSection
-ManifestoSection
-ArchitectSection  <- NEW
-VaultSection
-(Future sections)
-```
-
----
-
-## Technical Implementation Details
-
-### Marquee Animation
-The existing `animate-marquee-left` keyframe in `tailwind.config.ts` works perfectly:
-```text
-"marquee-left": {
-  "0%": { transform: "translateX(0%)" },
-  "100%": { transform: "translateX(-50%)" }
-}
-```
-
-Text structure for "WHO AM I?":
-- "WHO AM " (lavender/foreground)
-- "I" (gold, italic, font-display)
-- "?" (lavender/foreground)
-- Repeated 12+ times for seamless loop
-
-### Overlay Gradient
-```text
-background: linear-gradient(
-  to top,
-  hsl(var(--vault-bg)) 0%,
-  hsl(var(--vault-bg) / 0.8) 40%,
-  transparent 100%
-)
-```
-
-### Typography Hierarchy
-- Headline "I'm Manav": `font-display font-bold text-4xl md:text-6xl text-foreground`
-- Subheadline: `font-body text-lg md:text-xl text-muted-foreground tracking-wide`
-- Separator: Use " | " with slight letter-spacing
-
-### Z-Index Stack
-```text
-z-10: Pinned Manifesto row
-z-20: Architect section (overlays Manifesto)
-z-20: Vault section (overlays Architect)
-```
-
----
-
-## Color Palette Usage
-
-| Element | Color Token | Hex Value |
-|---------|-------------|-----------|
-| Section Background | `--vault-bg` | #0F0512 |
-| Marquee Strip BG | `--plum-shadow` | #3E1A47 |
-| "I" in Marquee | `--gold` | #FFD233 |
-| Headline Text | `--foreground` (lavender) | #F5E6FA |
-| Subheadline | `--muted-foreground` | ~65% lavender |
-| Overlay Gradient | `--vault-bg` with alpha | #0F0512 |
-
----
-
-## Mobile Responsiveness
-
-- Marquee strip: Same animation, slightly smaller height (`h-10` vs `h-14`)
-- Image: Full width, auto height, maintains aspect ratio
-- Text overlay: Adjusted padding (`px-5` vs `px-16`)
-- Font sizes: Reduced for mobile (`text-3xl` vs `text-6xl` for headline)
-
----
-
-## Scroll Behavior Summary
-
-1. User scrolls through Manifesto rows 1 & 2 normally
-2. Row 3 reaches top and **pins** (sticky behavior)
-3. **Architect section** rises from below, covering row 3
-4. Architect marquee and image come into view
-5. User scrolls through Architect content
-6. Architect content pins (sticky at bottom)
-7. **Vault section** rises with rounded corners, covering Architect
-8. Scroll continues into Vault grid
+- All animations use `useTransform` from Framer Motion for scroll-linked effects
+- Highlighter component remains untouched - it handles its own scroll-triggered decoration
+- Container animations won't conflict with inline Highlighter effects
+- Mobile receives same animations with adjusted values for performance
+- GPU-accelerated properties (transform, opacity, filter) used for smooth 60fps
 
