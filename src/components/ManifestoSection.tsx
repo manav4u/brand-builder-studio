@@ -27,11 +27,17 @@ const ManifestoRow = ({
     offset: ["start 85%", "end 30%"],
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
-  const yHeadline = useTransform(scrollYProgress, [0, 0.15], [24, 0]);
-  const yBody = useTransform(scrollYProgress, [0, 0.15], [32, 0]);
+  // Enhanced text animations with smoother curves
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+  const yHeadline = useTransform(scrollYProgress, [0, 0.2], [50, 0]);
+  const yBody = useTransform(scrollYProgress, [0.05, 0.25], [60, 0]);
+  const bodyOpacity = useTransform(scrollYProgress, [0.05, 0.25], [0, 1]);
 
+  // Enhanced image animations - scale reveal
+  const imageScale = useTransform(scrollYProgress, [0, 0.3], [1.08, 1]);
+  const imageOpacity = useTransform(scrollYProgress, [0, 0.25], [0, 1]);
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
+  
   const imageSrc = isMobile ? mobileImage : desktopImage;
 
   const textContent = (
@@ -47,7 +53,7 @@ const ManifestoRow = ({
       </motion.h2>
       <motion.p
         className="font-body text-muted-foreground text-base md:text-lg leading-snug max-w-xl"
-        style={{ y: yBody }}
+        style={{ y: yBody, opacity: bodyOpacity }}
       >
         {subtext}
       </motion.p>
@@ -57,8 +63,12 @@ const ManifestoRow = ({
   const imageContent = (
     <div className="relative w-full h-[36vh] md:h-full overflow-hidden">
       <motion.div
-        className="absolute inset-0 w-full h-[106%]"
-        style={{ y: imageY, opacity }}
+        className="absolute inset-0 w-full h-[106%] origin-center"
+        style={{ 
+          y: imageY, 
+          scale: imageScale,
+          opacity: imageOpacity 
+        }}
       >
         <img src={imageSrc} alt="" className="w-full h-full object-cover" />
         <div
@@ -149,7 +159,7 @@ const ManifestoSection = () => {
       headline: (
         <>
           I ENGINEER{" "}
-          <span className="text-[#FFD233] italic font-serif">
+          <span className="text-gold italic font-serif">
             OBSESSION.
           </span>
         </>

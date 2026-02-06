@@ -68,8 +68,8 @@ export default {
         "vault-bg": "hsl(var(--vault-bg))",
       },
       fontFamily: {
-        display: ["Playfair Display", "Georgia", "serif"],
-        body: ["Inter", "system-ui", "sans-serif"],
+        display: ["EB Garamond", "Playfair Display", "Georgia", "serif"],
+        body: ["Inter", "Helvetica Neue", "Helvetica", "system-ui", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -117,8 +117,8 @@ export default {
         "scale-in": "scale-in 1.2s ease-out forwards",
         "bounce-gentle": "bounce-gentle 2s ease-in-out infinite",
         "fade-in": "fade-in 0.6s ease-out forwards",
-        "marquee-left": "marquee-left 15s linear infinite",
-        "marquee-right": "marquee-right 15s linear infinite",
+        "marquee-left": "marquee-left 30s linear infinite",
+        "marquee-right": "marquee-right 30s linear infinite",
       },
     },
   },
