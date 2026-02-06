@@ -1,6 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import Header from "@/components/Header";
 import ManifestoSection from "@/components/ManifestoSection";
+import ArchitectSection from "@/components/ArchitectSection";
 import VaultSection from "@/components/VaultSection";
 
 const Index = () => {
@@ -9,6 +10,7 @@ const Index = () => {
       <Header />
       <HeroSection />
       <ManifestoSection />
+      <ArchitectSection />
       <VaultSection />
       
       {/* Placeholder for future sections */}
