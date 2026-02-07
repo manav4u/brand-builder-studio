@@ -1,213 +1,292 @@
 
 
-# Animation Enhancement & Typography Refinement Plan
-
-## Overview
-Elevating the Manifesto and Architect sections with world-class animations, refined typography using Inter + Helvetica + Apple Garamond, slower marquee effects, adjusted overlay gradients, and increased headline sizing - all while maintaining harmony with existing Highlighter animations.
+# Typography, Animation & Visual Polish Plan
+## Strictly Following the Majestic Color Palette
 
 ---
 
-## Changes Summary
+## Official Color Palette (STRICT ADHERENCE)
 
-### 1. Typography System Update
+| Token               | HSL Value          | Hex       | Usage                          |
+|---------------------|-------------------|-----------|--------------------------------|
+| `--background`      | 285 55% 9%        | `#1E0B24` | Midnight Aubergine (main bg)   |
+| `--foreground`      | 285 60% 94%       | `#F5E6FA` | Lavender Mist (primary text)   |
+| `--gold`            | 45 100% 60%       | `#FFD233` | Luminous Gold (accents)        |
+| `--plum-shadow`     | 285 45% 19%       | `#3E1A47` | Plum Shadow (surfaces)         |
+| `--vault-bg`        | 285 65% 4%        | `#0F0512` | Deep Vault (section depth)     |
+| `--muted-foreground`| 285 30% 65%       | —         | Subtle text (body copy)        |
 
-**Files:** `index.html`, `tailwind.config.ts`
-
-**New Font Stack:**
-- **Display (Headlines):** Apple Garamond → Playfair Display fallback
-- **Body (Text):** Inter → Helvetica Neue → system-ui
-
-```text
-Google Fonts Update:
-- Add: EB Garamond (closest to Apple Garamond available on Google Fonts)
-- Keep: Inter, Playfair Display
-
-Font Family Config:
-- font-display: ["EB Garamond", "Playfair Display", "Georgia", "serif"]
-- font-body: ["Inter", "Helvetica Neue", "Helvetica", "system-ui", "sans-serif"]
-```
+**Tailwind Classes (ONLY THESE for text):**
+- `text-foreground` → Lavender Mist #F5E6FA (headlines, primary)
+- `text-lavender` → Same as foreground (headlines)
+- `text-gold` → Luminous Gold #FFD233 (accents, emphasis)
+- `text-muted-foreground` → 65% Lavender (body, subtitles)
 
 ---
 
-### 2. Marquee Speed Reduction
+## Issues & Solutions
 
-**File:** `tailwind.config.ts`
-
-Current speed: `15s` (too fast)
-New speed: `30s` (slower, more elegant)
-
-```text
-Keyframe Updates:
-- animate-marquee-left: 15s → 30s
-- animate-marquee-right: 15s → 30s
-```
-
-This affects:
-- X-Strap separator in ManifestoSection
-- "WHO AM I?" marquee in ArchitectSection
+| Issue | Current State | Solution |
+|-------|--------------|----------|
+| No text line animations in Manifesto | Only container-level fade | Add staggered line reveals with blur-clear effect |
+| Architect fade-in too fast | 0.7-0.9s duration | Increase to 1.2-1.5s for cinematic feel |
+| Architect subtext too large/positioned wrong | Inline flow, large text | Smaller, left-aligned below headline with proper spacing |
+| Colors not from palette | Some inconsistencies | Strict use of palette tokens only |
+| X-strap looks 3D tilted | Uses `rotate-[6deg]` | Change to `skewY(3deg)` for flat X-axis angle |
+| X-strap text not centered | Flex without proper centering | Add `h-full justify-center items-center` |
 
 ---
 
-### 3. Architect Section Enhancements
-
-**File:** `src/components/ArchitectSection.tsx`
-
-**Overlay Gradient Reduction (60-70% → 50-60%):**
-```text
-Current:
-  hsl(var(--vault-bg)) 0%,
-  hsl(var(--vault-bg) / 0.85) 25%,
-  hsl(var(--vault-bg) / 0.4) 50%,
-  transparent 100%
-
-New:
-  hsl(var(--vault-bg)) 0%,
-  hsl(var(--vault-bg) / 0.7) 20%,
-  hsl(var(--vault-bg) / 0.3) 45%,
-  transparent 85%
-```
-
-**Headline Size Increase:**
-```text
-Current: text-4xl md:text-6xl lg:text-7xl
-New: text-5xl md:text-7xl lg:text-8xl xl:text-9xl
-```
-
-**World-Class Animations:**
-
-Image Animation:
-- Scale reveal from 1.1 to 1.0 with opacity fade
-- Subtle parallax maintained
-- Smooth cubic-bezier easing
-
-Text Animations (staggered):
-- Headline: Fade up + slight blur clear effect
-- Subheadline: Delayed fade up with tracking animation
-- Character-by-character reveal for "Manav" using Framer Motion
+## 1. Brand Typography System
 
 ```text
-Animation Sequence (on scroll into view):
-1. 0ms - Image scales in with opacity (1s duration)
-2. 400ms - "I'm" fades up smoothly
-3. 600ms - "Manav" reveals with gold glow pulse
-4. 800ms - Subheadline fades up with subtle tracking expand
+BRAND TYPOGRAPHY HIERARCHY
+══════════════════════════════════════════════════════════════
+
+DISPLAY HEADLINES (Hero, Section Titles)
+────────────────────────────────────────
+Font:   EB Garamond (Primary) / Playfair Display (Fallback)
+Weight: 700 (Bold)
+Color:  text-foreground (#F5E6FA Lavender Mist)
+Style:  Uppercase for impact, mixed case for elegance
+
+ACCENT TEXT (Names, Keywords, CTAs)
+────────────────────────────────────────
+Font:   EB Garamond Italic (font-display italic)
+Color:  text-gold (#FFD233 Luminous Gold)
+Usage:  "Manav", "OBSESSION", "I" in marquee
+
+BODY TEXT (Paragraphs, Descriptions)
+────────────────────────────────────────
+Font:   Inter (Primary) / Helvetica Neue (Fallback)
+Weight: 400-500
+Color:  text-muted-foreground (65% Lavender)
+
+UI TEXT (Labels, Navigation, Small)
+────────────────────────────────────────
+Font:   Inter
+Weight: 500-600
+Color:  text-foreground or text-muted-foreground
+Style:  Uppercase with tracking-widest for labels
 ```
 
 ---
 
-### 4. Manifesto Section Animation Enhancements
+## 2. X-Strap Fix (ManifestoSection)
 
-**File:** `src/components/ManifestoSection.tsx`
+**Problem:** Current `rotate-[6deg]` creates a 3D perspective effect.
 
-**Image Animations (coordinated with text, not conflicting with Highlighter):**
-
-Current: Simple opacity + parallax
-Enhanced:
-- Scale from 1.05 → 1.0 during scroll reveal
-- Mask reveal effect (image unveils from edge)
-- Smooth parallax maintained
-
-**Text Animations (compatible with Highlighter):**
-
-The Highlighter already handles underline/highlight animations on specific words. We need to animate the TEXT CONTAINER, not individual words, so there's no conflict.
+**Solution:** Use `skewY` transform for flat X-axis angle only.
 
 ```text
-Animation Strategy:
-- Container-level animations (opacity, y-translate)
-- Highlighter handles word-level decorations
-- No interference between the two
+Current (3D looking - WRONG):
+┌───────────────────────────────────────────┐
+│      ╱─────────────────────────╲          │  <- rotate causes perspective
+└───────────────────────────────────────────┘
 
-Enhanced Text Animation:
-- Headline: Fade up with slight overshoot easing
-- Subtext: Staggered fade up (200ms delay after headline)
-- Smooth cubic-bezier curve for premium feel
+Fixed (Flat X pattern - CORRECT):
+┌───────────────────────────────────────────┐
+│     ═══════════════════════════           │  <- skewY: flat angle
+│     ═══════════════════════════           │  <- -skewY: opposite angle
+└───────────────────────────────────────────┘
 ```
 
-**Keyframe Updates for Premium Motion:**
+**Code Changes:**
+- Replace `-rotate-[6deg]` with `style={{ transform: "skewY(-3deg)" }}`
+- Replace `rotate-[6deg]` with `style={{ transform: "skewY(3deg)" }}`
+- Add `h-full flex items-center justify-center` for proper text centering
+
+---
+
+## 3. Manifesto Section Text Animations
+
+**Current:** Only container-level opacity/translate  
+**Enhanced:** Staggered line-by-line reveals with premium motion
 
 ```text
-New Easing Curves:
-- "ease-out-expo": cubic-bezier(0.16, 1, 0.3, 1)
-- "ease-out-quart": cubic-bezier(0.25, 1, 0.5, 1)
+ANIMATION SEQUENCE (per row)
+════════════════════════════════════════════
+0.00s: Image begins scale reveal (1.08 → 1.0)
+0.05s: Headline starts fade-up with blur clear
+0.15s: Headline blur clears completely
+0.20s: Body text begins staggered fade-up
+0.40s: Highlighter animations trigger (existing)
+```
 
-New Keyframes:
-- "reveal-up": translateY(40px) + opacity(0) → translateY(0) + opacity(1)
-- "scale-reveal": scale(1.08) + opacity(0) → scale(1) + opacity(1)
-- "blur-in": blur(8px) + opacity(0) → blur(0) + opacity(1)
+**Technical Implementation:**
+- Add `filter` transform for blur-clearing headline effect
+- Use `useTransform` with staggered input ranges
+- Extend animation duration from 0.2 → 0.35 range for premium pacing
+
+**New Motion Values:**
+```text
+headlineBlur: [0, 0.25] → ["blur(8px)", "blur(0px)"]
+opacity:      [0, 0.25] → [0, 1]
+yHeadline:    [0, 0.25] → [60, 0]
+yBody:        [0.1, 0.35] → [50, 0]
+bodyOpacity:  [0.1, 0.35] → [0, 1]
 ```
 
 ---
 
-### 5. Framer Motion Integration
+## 4. Architect Section Refinements
 
-Both sections already import Framer Motion. We'll enhance the motion values:
+### Animation Speed (Slower for Cinematic Feel)
 
-**ManifestoRow Enhanced Transforms:**
 ```text
-Current:
-- opacity: [0, 0.15] → [0, 1]
-- yHeadline: [0, 0.15] → [24, 0]
-- yBody: [0, 0.15] → [32, 0]
-
-Enhanced:
-- opacity: smoother curve with [0, 0.2] → [0, 1]
-- yHeadline: [0, 0.2] → [50, 0] (more dramatic)
-- yBody: [0.05, 0.25] → [60, 0] (staggered start)
-- imageScale: [0, 0.3] → [1.08, 1] (scale reveal)
-- imageOpacity: [0, 0.25] → [0, 1]
+Element          Current    →    New (Slower)
+─────────────────────────────────────────────
+Headline "I'm"   0.8s           1.2s, delay 0.3s
+"Manav" gold     0.9s           1.4s, delay 0.5s
+Subheadline      0.7s           1.0s, delay 0.8s
 ```
 
-**ArchitectSection Enhanced Animations:**
+### Subtext Positioning & Size
+
 ```text
-Image Block:
-- initial: { scale: 1.15, opacity: 0 }
-- animate: { scale: 1, opacity: 1 }
-- transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
+BEFORE (Current - Wrong):
+┌─────────────────────────────────────────┐
+│ I'm Manav                               │
+│ Student | 20 | Pune, India              │  <- Too large, too close
+└─────────────────────────────────────────┘
 
-Headline "I'm Manav":
-- initial: { opacity: 0, y: 60, filter: "blur(10px)" }
-- animate: { opacity: 1, y: 0, filter: "blur(0px)" }
-- transition: { duration: 0.8, delay: 0.3, ease: "easeOut" }
+AFTER (Fixed):
+┌─────────────────────────────────────────┐
+│ I'm Manav                               │
+│                                         │
+│ Student  ·  20  ·  Pune, India          │  <- Smaller, more spacing
+└─────────────────────────────────────────┘
+```
 
-"Manav" Gold Text:
-- Additional subtle glow pulse on reveal
+**Changes:**
+- Font size: `text-lg md:text-xl lg:text-2xl` → `text-sm md:text-base lg:text-lg`
+- Add `mt-4 md:mt-6` for proper spacing below headline
+- Use `·` (middle dot) instead of `|` for refined separators
+- Left-aligned (already correct)
 
-Subheadline:
-- initial: { opacity: 0, y: 40, letterSpacing: "0.05em" }
-- animate: { opacity: 1, y: 0, letterSpacing: "0.1em" }
-- transition: { duration: 0.7, delay: 0.5, ease: "easeOut" }
+### Strict Color Enforcement
+
+```text
+Element              Current              →    Fixed
+──────────────────────────────────────────────────────
+Headline "I'm"       text-foreground           ✓ Correct
+"Manav"              text-gold italic          ✓ Correct
+Subheadline          text-muted-foreground     ✓ Correct
+Separators           text-gold/60              text-muted-foreground/50
+Marquee "WHO AM"     text-foreground           ✓ Correct
+Marquee "I"          text-gold italic          ✓ Correct
+Marquee ✦            text-gold/60              text-muted-foreground/60
 ```
 
 ---
 
 ## Files to Modify
 
-| File | Changes |
-|------|---------|
-| `index.html` | Add EB Garamond font import |
-| `tailwind.config.ts` | Update font families, slow marquee, add new keyframes/easings |
-| `src/components/ArchitectSection.tsx` | Reduce overlay, increase headline, add premium animations |
-| `src/components/ManifestoSection.tsx` | Add image scale reveal, enhance text motion curves |
+### `src/components/ManifestoSection.tsx`
+
+**X-Strap Changes (lines 186-204):**
+```text
+- Remove: -rotate-[6deg] and rotate-[6deg] classes
+- Add: style={{ transform: "skewY(-3deg)" }} and style={{ transform: "skewY(3deg)" }}
+- Add: h-full flex items-center justify-center to inner flex container
+```
+
+**Text Animation Enhancements (lines 30-60):**
+```text
+- Add headlineBlur transform with useTransform
+- Increase animation range from [0, 0.2] to [0, 0.25]
+- Add filter: headlineBlur to headline motion.h2 style
+- Stagger body animation to [0.1, 0.35] for offset
+```
+
+**Color Audit:**
+- Line 49: `text-foreground` ✓
+- Line 55: `text-muted-foreground` ✓
+- Line 162: `text-gold` ✓
+- Line 189: `text-gold/80` → Keep (palette compliant)
+- Line 199: `text-foreground/70` → Keep (palette compliant)
+
+---
+
+### `src/components/ArchitectSection.tsx`
+
+**Animation Timing (lines 100-139):**
+```text
+Headline h2:
+- duration: 0.8 → 1.2
+- delay: 0.2 → 0.3
+
+"Manav" span:
+- duration: 0.9 → 1.4
+- delay: 0.4 → 0.5
+
+Subheadline p:
+- duration: 0.7 → 1.0
+- delay: 0.5 → 0.8
+```
+
+**Subtext Refinement (lines 126-139):**
+```text
+- Change: text-lg md:text-xl lg:text-2xl
+- To: text-sm md:text-base lg:text-lg
+
+- Add: mt-4 md:mt-6 for spacing
+
+- Change separators from | to ·
+- Change: text-gold/60 mx-2
+- To: text-muted-foreground/50 mx-3
+```
+
+**Marquee Color Fix (lines 40):**
+```text
+- Change: text-gold/60 
+- To: text-muted-foreground/60
+```
 
 ---
 
 ## Animation Philosophy
 
-The animations follow these principles to match the brand identity:
+```text
+WORLD-CLASS ANIMATION PRINCIPLES
+════════════════════════════════════════════════════════════
 
-1. **Deliberate Pacing** - Slower, more intentional reveals that demand attention
-2. **Layered Motion** - Image first, then headline, then body text
-3. **Smooth Easing** - Exponential ease-out for luxury feel
-4. **Subtle Scale** - Micro-animations that add depth without distraction
-5. **Scroll-Linked** - All reveals tied to scroll position for control
+1. DELIBERATE PACING
+   Slower = more luxurious
+   Target: 1.0-1.5s for major reveals
+   Never rush premium moments
+
+2. STAGGERED REVEALS
+   Image → Headline → Body → Details
+   200-400ms stagger between elements
+   Creates depth and hierarchy
+
+3. PREMIUM EASING
+   easeOutExpo: [0.16, 1, 0.3, 1]
+   Quick start, graceful settle
+   Signature luxury motion curve
+
+4. SUBTLE BLUR EFFECT
+   blur(8px) → blur(0px) on headlines
+   Creates focus-in effect
+   Cinematic text reveals
+
+5. SCROLL-LINKED MOTION
+   All reveals tied to scroll position
+   User controls the pace
+   No jarring auto-plays
+```
 
 ---
 
-## Technical Notes
+## Expected Outcome
 
-- All animations use `useTransform` from Framer Motion for scroll-linked effects
-- Highlighter component remains untouched - it handles its own scroll-triggered decoration
-- Container animations won't conflict with inline Highlighter effects
-- Mobile receives same animations with adjusted values for performance
-- GPU-accelerated properties (transform, opacity, filter) used for smooth 60fps
+After implementation:
+- Manifesto headlines animate with premium blur-clearing reveals
+- Body text follows with staggered fade-up motion
+- X-strap creates clean flat X pattern (no 3D perspective)
+- Architect animations feel slower, more cinematic (1.2-1.5s)
+- Subtext is smaller, properly spaced, perfectly left-aligned
+- All colors strictly follow the Majestic palette
+- Overall feel: World-class, luxury brand portfolio
 
