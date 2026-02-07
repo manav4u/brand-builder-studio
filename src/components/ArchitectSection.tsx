@@ -37,7 +37,7 @@ const ArchitectSection = () => {
       <span className="font-display text-base md:text-lg text-foreground tracking-widest">
         ?
       </span>
-      <span className="text-gold/60 mx-4">✦</span>
+      <span className="text-muted-foreground/60 mx-4">✦</span>
     </span>
   ));
 
@@ -102,11 +102,11 @@ const ArchitectSection = () => {
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ 
-                duration: 0.8, 
-                delay: 0.2,
+                duration: 1.2, 
+                delay: 0.3,
                 ease: easeOutExpo 
               }}
-              className="font-display font-bold text-foreground text-5xl md:text-7xl lg:text-8xl xl:text-9xl mb-3 md:mb-4"
+              className="font-display font-bold text-foreground text-5xl md:text-7xl lg:text-8xl xl:text-9xl"
             >
               I'm{" "}
               <motion.span 
@@ -115,8 +115,8 @@ const ArchitectSection = () => {
                 whileInView={{ opacity: 1, filter: "blur(0px)" }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ 
-                  duration: 0.9, 
-                  delay: 0.4,
+                  duration: 1.4, 
+                  delay: 0.5,
                   ease: easeOutExpo 
                 }}
               >
@@ -125,17 +125,17 @@ const ArchitectSection = () => {
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 40, letterSpacing: "0.05em" }}
-              whileInView={{ opacity: 1, y: 0, letterSpacing: "0.1em" }}
+              whileInView={{ opacity: 1, y: 0, letterSpacing: "0.15em" }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ 
-                duration: 0.7, 
-                delay: 0.5, 
+                duration: 1.0, 
+                delay: 0.8, 
                 ease: easeOutExpo 
               }}
-              className="font-body text-muted-foreground text-lg md:text-xl lg:text-2xl tracking-wide"
+              className="font-body text-muted-foreground text-sm md:text-base lg:text-lg tracking-widest mt-4 md:mt-6"
             >
-              Student <span className="text-gold/60 mx-2">|</span> 20{" "}
-              <span className="text-gold/60 mx-2">|</span> Pune, India
+              Student <span className="text-muted-foreground/50 mx-3">·</span> 20{" "}
+              <span className="text-muted-foreground/50 mx-3">·</span> Pune, India
             </motion.p>
           </div>
         </div>
